@@ -1,13 +1,19 @@
 <script setup lang="ts">
-import LButton from './plugin/l-button/l-button.vue';
+// import {ViButton} from 'vity-ui';
+const btn=[
+  'default',
+  'primary',
+  'warning',
+  'success',
+  'info',
+  'error'
+]
 </script>
 
 <template>
   <div>
-<LButton type="">这是一个按钮</LButton>
+    <ViButton v-for="item in btn"  :type="(item as string)">{{ item }}</ViButton>
   </div>
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>

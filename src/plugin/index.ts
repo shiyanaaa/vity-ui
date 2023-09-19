@@ -1,9 +1,9 @@
 import type { App } from 'vue'
-import LButton from './l-button'
+import ViButton from './vi-button/index.vue'
 
 // 所有组件列表
 const components = [
-    LButton
+  ViButton
 ]
 
 // 定义 install 方法
@@ -17,15 +17,15 @@ const install = (app: App): void => {
     解决方式一：使用// @ts-ignore
     解决方式二：使用类型断言 尖括号语法(component.__name) 或 as语法(component.__name as string)
   */
-  components.forEach(component => app.component(component.__name as string, component))
+  components.forEach(component => app.component(component.name as string, component))
 }
 
 export {
-    LButton
+  ViButton
 }
 
-const LUI = {
+const VityUI = {
   install
 }
 
-export default LUI
+export default VityUI

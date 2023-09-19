@@ -1,1 +1,18 @@
-$colorPrimary: #409eff;
+
+$colors: (
+    primary: #409eff,
+    success: #67c23a,
+    info: #909399,
+    warning: #e6a23c,
+    error: #f56c6c
+);
+$black: #000;
+@each $key, $color in $colors {
+    .vi-button-#{$key} {
+         background-color: $color;
+         color:#fff
+    }
+}
+.vi-button:not(:last-child){
+    margin-right: 10px;
+}
