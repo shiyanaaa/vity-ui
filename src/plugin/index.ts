@@ -1,6 +1,6 @@
 import type { App } from 'vue'
 import ViButton from './vi-button/index.vue'
-
+import "./style.scss"
 // 所有组件列表
 const components = [
   ViButton

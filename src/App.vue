@@ -1,5 +1,5 @@
 <script setup lang="ts">
-// import {ViButton} from 'vity-ui';
+import ViButton from './plugin/vi-button/index.vue';
 const btn=[
   'default',
   'primary',
