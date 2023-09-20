@@ -5,6 +5,7 @@
     </button>
 </template>
 <script setup lang="ts" name="ViButton">
+import ViIcon from '../vi-icon/index.vue'
 import { computed, defineEmits } from 'vue'
 const emit = defineEmits(['click'])
 interface Props {

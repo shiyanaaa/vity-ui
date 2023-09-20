@@ -14,7 +14,7 @@ const btn:Array<string>=[
 <template>
   <div>
     <ViIcon name="dianhua"></ViIcon>
-    <ViButton icon="xin-xianxing" v-for="item in btn" :key="item" :type="item"><ViIcon name="dianhua"></ViIcon>{{ item }}</ViButton>
+    <ViButton icon="xin-xianxing" v-for="item in btn" :key="item" :type="item">{{ item }}</ViButton>
     <ViButton >123</ViButton>
   </div>
 </template>
