@@ -25,7 +25,7 @@ export default defineConfig({
       // 全局样式引入
       scss: {
         // 文件路径，注意最后需要添加 ';'
-        additionalData: '@import "@/plugin/style.scss";',
+        additionalData: '@import "@/style/var.scss";',
         javascriptEnabled: true
       }
     }

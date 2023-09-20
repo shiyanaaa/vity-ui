@@ -1,18 +1,19 @@
 <script setup lang="ts">
-import ViButton from './plugin/vi-button/index.vue';
+import {ViButton} from "vity-ui"
 const btn=[
   'default',
   'primary',
   'warning',
   'success',
   'info',
-  'error'
+  'error',
+  'aaa'
 ]
 </script>
 
 <template>
   <div>
-    <ViButton v-for="item in btn"  :type="(item as string)">{{ item }}</ViButton>
+    <ViButton v-for="item in btn" :key="item" :type="(item as string)">{{ item }}</ViButton>
   </div>
 </template>
 

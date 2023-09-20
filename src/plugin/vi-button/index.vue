@@ -4,10 +4,10 @@
     </button>
 </template>
 <script setup lang="ts" name="ViButton">
-import { computed,defineEmits  } from 'vue'
+import { computed, defineEmits } from 'vue'
 const emit = defineEmits(['click'])
 interface Props {
-    type?:  string | 'default' | 'primary' | 'warning' | 'success' | 'info' | 'error';
+    type?: string | 'primary' | 'warning' | 'success' | 'info' | 'error';
 }
 const props = defineProps<Props>()
 const className = computed(() => {
@@ -23,18 +23,24 @@ const className = computed(() => {
     border: none;
     cursor: pointer;
     border-radius: 5px;
+    color: #000;
+}
 
-}
-@each $key, $color in $colors {
+@each $key,
+$color in $colors {
     .vi-button-#{$key} {
-         background-color: $color;
-         color:#fff;
-         &:hover {
-             background-color: mix($color, #fff, 90%);
-         }
-         &:active {
-             background-color: mix($color, #000, 90%);
-         }
+        background-color: $color;
+        border: 1px solid $color;
+        color: #fff;
+
+        &:hover {
+            border-color: linght-color($color, 1);
+            background-color: linght-color($color, 1);
+        }
+
+        &:active {
+            border-color: dark-color($color, 1);
+            background-color: dark-color($color, 1);
+        }
     }
-}
-</style>
+}</style>

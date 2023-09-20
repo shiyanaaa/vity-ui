@@ -1,30 +1,5 @@
-$colors: (
-    primary: #409eff,
-    success: #67c23a,
-    info: #909399,
-    warning: #e6a23c,
-    error: #f56c6c
-);
-$black: #000;
-// @each $key, $color in $colors {
 
-//     .vi-button-#{$key} {
-//          background-color: $color;
-//          color:#fff
-//     }
-
-// }
-:root {
-    --aa:$black;
-    @each $key, $color in $colors {
-        @for $i from 1 through 9 {
-            --vi-color-#{$key}-#{$i}: #fff;
-        }
-    }
-}
-:root{
-    --bb:#000;
-}
 .vi-button:not(:last-child) {
-    margin-right: 10px;
+  margin-right: 10px;
 }
+
