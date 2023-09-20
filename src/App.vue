@@ -1,19 +1,21 @@
 <script setup lang="ts">
-import {ViButton} from "vity-ui"
-const btn=[
+import {ViButton,ViIcon} from 'vity-ui'
+
+const btn:Array<string>=[
   'default',
   'primary',
   'warning',
   'success',
   'info',
-  'error',
-  'aaa'
+  'error'
 ]
 </script>
 
 <template>
   <div>
-    <ViButton v-for="item in btn" :key="item" :type="(item as string)">{{ item }}</ViButton>
+    <ViIcon name="dianhua"></ViIcon>
+    <ViButton icon="xin-xianxing" v-for="item in btn" :key="item" :type="item"><ViIcon name="dianhua"></ViIcon>{{ item }}</ViButton>
+    <ViButton >123</ViButton>
   </div>
 </template>
 

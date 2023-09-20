@@ -1,5 +1,6 @@
 <template >
     <button :class="className" @click="emit('click')">
+        <ViIcon v-if="props.icon" :name="props.icon"></ViIcon>
         <slot></slot>
     </button>
 </template>
@@ -7,23 +8,27 @@
 import { computed, defineEmits } from 'vue'
 const emit = defineEmits(['click'])
 interface Props {
-    type?: string | 'primary' | 'warning' | 'success' | 'info' | 'error';
+    type?: ''|'default' | 'primary' | 'warning' | 'success' | 'info' | 'error',
+    icon?: string
 }
 const props = defineProps<Props>()
 const className = computed(() => {
     let nameList = ['vi-button']
     if (props.type)
         nameList.push(`vi-button-${props.type}`)
+    else
+        nameList.push(`vi-button-default`)
     return nameList
 })
 </script>
 <style lang="scss" scoped>
 .vi-button {
     padding: 8px 15px;
-    border: none;
     cursor: pointer;
     border-radius: 5px;
     color: #000;
+    border: 1px solid #000;
+    
 }
 
 @each $key,

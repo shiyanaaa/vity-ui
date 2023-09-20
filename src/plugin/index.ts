@@ -1,9 +1,11 @@
 import type { App } from 'vue'
 import ViButton from './vi-button/index.vue'
+import ViIcon from './vi-icon/index.vue'
 import "./style.scss"
 // 所有组件列表
 const components = [
-  ViButton
+  ViButton,
+  ViIcon
 ]
 
 // 定义 install 方法
@@ -21,7 +23,8 @@ const install = (app: App): void => {
 }
 
 export {
-  ViButton
+  ViButton,
+  ViIcon
 }
 
 const VityUI = {
