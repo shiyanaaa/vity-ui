@@ -1,7 +1,8 @@
 <template >
     <button :disabled="disabled" :class="className" @click="emit('click')">
         <span class="vi-button-span">
-            <ViIcon v-if="props.icon" :name="props.icon"></ViIcon>
+            <ViIcon rotating v-if="props.loading" :name="props.loadIcon || 'tongbu'"></ViIcon>
+            <ViIcon v-if="props.icon&&!props.loading" :name="props.icon"></ViIcon>
             <span v-if="isVertical">
                 <slot></slot>
             </span>
@@ -10,7 +11,7 @@
 </template>
 <script setup lang="ts" name="ViButton">
 import ViIcon from '../vi-icon/index.vue'
-import { computed, useSlots, defineEmits, VNode, Component } from 'vue'
+import { computed, useSlots, defineEmits, type VNode } from 'vue'
 
 const uSlots = useSlots()
 const emit = defineEmits(['click'])
@@ -21,22 +22,22 @@ interface Props {
     plain?: boolean,
     circle?: boolean,
     disabled?: boolean,
-    square?:boolean
+    square?: boolean,
+    color?: string,
+    loading?: boolean,
+    loadIcon?: string
 }
 
 const props = defineProps<Props>()
 const className = computed(() => {
     let nameList = ['vi-button']
-    if (props.type)
-        nameList.push(`vi-button-${props.type}`)
-    else
-        nameList.push(`vi-button-default`)
+    props.type ? nameList.push(`vi-button-${props.type}`) : nameList.push(`vi-button-default`)
     props.round ? nameList.push(`vi-button-round`) : ""
     props.plain ? nameList.push(`is-plain`) : ""
     props.circle ? nameList.push(`is-circle`) : ""
     props.square ? nameList.push(`is-square`) : ""
     props.disabled ? nameList.push(`is-disabled`) : ""
-    
+
     return nameList
 })
 const isVertical = computed(() => {
@@ -46,7 +47,7 @@ const isVertical = computed(() => {
         const VNode: VNode[] = uSlots.default()
         return VNode.some((vNode) => {
             // console.log(vNode);
-            
+
             return true
             // console.log(vNode.type,"vNode")
         })
@@ -66,7 +67,7 @@ const isVertical = computed(() => {
     color: #000;
     border: 1px solid #000;
     vertical-align: middle;
-
+    height: 32px;
     display: inline-flex;
     border-color: #dcdfe6;
     color: #000;
@@ -75,6 +76,7 @@ const isVertical = computed(() => {
     & [class*=vi-icon]+span {
         margin-left: 6px;
     }
+
 
 
     &:hover {
@@ -91,15 +93,24 @@ const isVertical = computed(() => {
         padding: 8px;
         border-radius: 50%;
     }
+
     &.is-square {
         padding: 8px;
-        
+
     }
 
     &.is-disabled {
         cursor: no-drop;
         border-color: linght-color(#dcdfe6, 2);
         background-color: linght-color($color, 4);
+
+        &:hover {
+            background-color: linght-color($color, 4);
+        }
+
+        &:active {
+            background-color: linght-color($color, 4);
+        }
     }
 
     .vi-button-span {
@@ -122,8 +133,8 @@ $color in $colors {
         color: #fff;
 
         &:hover {
-            border-color: linght-color($color, 1);
-            background-color: linght-color($color, 1);
+            border-color: linght-color($color, 2);
+            background-color: linght-color($color, 2);
         }
 
         &:active {
@@ -131,10 +142,7 @@ $color in $colors {
             background-color: dark-color($color, 1);
         }
 
-        &.is-disabled {
-            border-color: linght-color($color, 4);
-            background-color: linght-color($color, 4);
-        }
+        
 
         &.is-plain {
             color: $color;
@@ -149,8 +157,21 @@ $color in $colors {
                 background-color: dark-color($color, 1);
             }
         }
+        &.is-disabled {
+            color: linght-color($color, 4);
+            border-color: linght-color($color, 6);
+            background-color: linght-color($color, 9);
 
+            &:hover {
+                color: linght-color($color, 4);
+                background-color: linght-color($color, 9);
+            }
+
+            &:active {
+                color: linght-color($color, 4);
+                background-color: linght-color($color, 9);
+            }
+        }
 
     }
-}
-</style>
+}</style>

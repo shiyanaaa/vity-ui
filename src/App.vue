@@ -1,5 +1,6 @@
 <script setup lang="ts">
 // import {ViButton,ViIcon} from 'vity-ui'
+import {ref} from "vue"
 interface Btn{
   type?:string,
   icon?:string,
@@ -17,50 +18,52 @@ const click=()=>{
   console.log("click");
   
 }
+const loading=ref(false)
 </script>
 
 <template>
   <div class="btn">
     <h1>vity-ui</h1>
     <div>
-      <ViButton v-for="item in btn" :key="item.type" :type="item.type">{{ item.type }}</ViButton>
+      <ViButton @click="loading=!loading" :loading="loading" loadIcon="tongbu" v-for="item in btn" :key="item.type" :type="item.type">{{ item.type }}</ViButton>
     </div>
     <div>
-      <ViButton v-for="item in btn" :key="item.type" :type="item.type" icon="weizhi"></ViButton>
+      <ViButton @click="loading=!loading" :loading="loading" v-for="item in btn" :key="item.type" :type="item.type" icon="weizhi"></ViButton>
     </div>
     <div>
-      <ViButton plain v-for="item in btn" :key="item.type" :type="item.type">{{ item.type }}</ViButton>
+      <ViButton @click="loading=!loading" :loading="loading" loadIcon="shuaxin" plain v-for="item in btn" :key="item.type" :type="item.type">{{ item.type }}</ViButton>
     </div>
     <div>
-      <ViButton icon="weizhi" v-for="item in btn" :key="item.type" :type="item.type">{{ item.type }}</ViButton>
+      <ViButton @click="loading=!loading" :loading="loading" icon="weizhi" v-for="item in btn" :key="item.type" :type="item.type">{{ item.type }}</ViButton>
     </div>
     <div>
-      <ViButton icon="haoping" plain v-for="item in btn" :key="item.type" :type="item.type">{{ item.type }}</ViButton>
+      <ViButton @click="loading=!loading" :loading="loading" icon="haoping" plain v-for="item in btn" :key="item.type" :type="item.type">{{ item.type }}</ViButton>
     </div>
     <div>
-      <ViButton round icon="shijian" v-for="item in btn" :key="item.type" :type="item.type">{{ item.type }}</ViButton>
+      <ViButton @click="loading=!loading" :loading="loading" round icon="shijian" v-for="item in btn" :key="item.type" :type="item.type">{{ item.type }}</ViButton>
     </div>
     <div>
-      <ViButton round icon="lingdang" plain v-for="item in btn" :key="item.type" :type="item.type">{{ item.type }}</ViButton>
+      <ViButton @click="loading=!loading" :loading="loading" round icon="lingdang" plain v-for="item in btn" :key="item.type" :type="item.type">{{ item.type }}</ViButton>
     </div>
     <div>
-      <ViButton circle icon="xihuan" plain v-for="item in btn" :key="item.type" :type="item.type" />
+      <ViButton @click="loading=!loading" :loading="loading" circle icon="xihuan" plain v-for="item in btn" :key="item.type" :type="item.type" />
     </div>
     <div>
-      <ViButton square icon="xihuan" plain v-for="item in btn" :key="item.type" :type="item.type" />
+      <ViButton @click="loading=!loading" :loading="loading" square icon="xihuan" plain v-for="item in btn" :key="item.type" :type="item.type" />
     </div>
     <div>
-      <ViButton square icon="xihuan" v-for="item in btn" :key="item.type" :type="item.type" />
+      <ViButton @click="loading=!loading" :loading="loading" square icon="xihuan" v-for="item in btn" :key="item.type" :type="item.type" />
     </div>
     <div>
-      <ViButton  @click="click" circle icon="shoucang" v-for="item in btn" :key="item.type" :type="item.type" />
+      <ViButton @click="loading=!loading" :loading="loading" circle icon="shoucang" v-for="item in btn" :key="item.type" :type="item.type" />
     </div>
     <div>
-      <ViButton @click="click" disabled circle icon="suoding" v-for="item in btn" :key="item.type" :type="item.type" />
+      <ViButton @click="loading=!loading" :loading="loading" disabled circle icon="suoding" v-for="item in btn" :key="item.type" :type="item.type" />
     </div>
     <div>
-      <ViButton round v-for="item in btn" :key="item.type" :type="item.type" icon="suoding"></ViButton>
+      <ViButton @click="loading=!loading" :loading="loading" loadIcon="jiazailoading-A" disabled v-for="item in btn" plain :key="item.type" :type="item.type">{{ item.type }}</ViButton>
     </div>
+    
   </div>
 </template>
 
