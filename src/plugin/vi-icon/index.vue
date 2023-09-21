@@ -1,5 +1,5 @@
 <template>
-    <svg class="icon" aria-hidden="true">
+    <svg class="icon vi-icon" aria-hidden="true" :style="iconStyle">
         <use :xlink:href="iconName"></use>
     </svg>
 </template>
@@ -11,6 +11,21 @@ const props=defineProps({
     name: {
         type: String,
         default: ''
+    },
+    size:{
+        type:Number,
+        default:15
+    },
+    color:{
+        type:String,
+        default:"inherit"
+    },
+})
+const iconStyle=computed(() => {
+    
+    return {
+        fontSize:`${props.size}px`,
+        color:props.color
     }
 })
 const iconName=computed(() => {
@@ -21,7 +36,7 @@ const iconName=computed(() => {
 <style scoped lang="scss">
 .icon {
        width: 1em; height: 1em;
-       vertical-align: -0.15em;
+       vertical-align: bottom;
        fill: currentColor;
        overflow: hidden;
     }
