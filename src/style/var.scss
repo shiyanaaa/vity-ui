@@ -5,11 +5,3 @@ $colors: (
   warning: #e6a23c,
   error: #f56c6c
 );
-$theme-color-interval: 10%;
-@function linght-color($color, $level) {
-  @return mix(white, $color, $level * $theme-color-interval);
-}
-// 混合黑色以及以及层次
-@function dark-color($color, $level) {
-  @return mix(black, $color, $level * $theme-color-interval);
-}

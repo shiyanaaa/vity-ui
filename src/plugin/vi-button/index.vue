@@ -1,8 +1,8 @@
 <template >
-    <button :disabled="disabled" :class="className" @click="emit('click')">
+    <button :style="buttonStyle" :disabled="disabled" :class="className" @click="emit('click')">
         <span class="vi-button-span">
             <ViIcon rotating v-if="props.loading" :name="props.loadIcon || 'tongbu'"></ViIcon>
-            <ViIcon v-if="props.icon&&!props.loading" :name="props.icon"></ViIcon>
+            <ViIcon v-if="props.icon && !props.loading" :name="props.icon"></ViIcon>
             <span v-if="isVertical">
                 <slot></slot>
             </span>
@@ -11,7 +11,7 @@
 </template>
 <script setup lang="ts" name="ViButton">
 import ViIcon from '../vi-icon/index.vue'
-import { computed, useSlots, defineEmits, type VNode } from 'vue'
+import { computed, useSlots, type VNode } from 'vue'
 
 const uSlots = useSlots()
 const emit = defineEmits(['click'])
@@ -32,12 +32,11 @@ const props = defineProps<Props>()
 const className = computed(() => {
     let nameList = ['vi-button']
     props.type ? nameList.push(`vi-button-${props.type}`) : nameList.push(`vi-button-default`)
-    props.round ? nameList.push(`vi-button-round`) : ""
+    props.round ? nameList.push(`is-round`) : ""
     props.plain ? nameList.push(`is-plain`) : ""
     props.circle ? nameList.push(`is-circle`) : ""
     props.square ? nameList.push(`is-square`) : ""
     props.disabled ? nameList.push(`is-disabled`) : ""
-
     return nameList
 })
 const isVertical = computed(() => {
@@ -57,36 +56,128 @@ const isVertical = computed(() => {
 
 })
 
+const colourBlend = (c1: string, c2: string, ratio = 5) => {
+    ratio *= 0.1
+    ratio = Math.max(Math.min(Number(ratio), 1), 0)
+    let r1 = parseInt(c1.substring(1, 3), 16)
+    let g1 = parseInt(c1.substring(3, 5), 16)
+    let b1 = parseInt(c1.substring(5, 7), 16)
+    let r2 = parseInt(c2.substring(1, 3), 16)
+    let g2 = parseInt(c2.substring(3, 5), 16)
+    let b2 = parseInt(c2.substring(5, 7), 16)
+    let r: string | number = Math.round(r1 * (1 - ratio) + r2 * ratio)
+    let g: string | number = Math.round(g1 * (1 - ratio) + g2 * ratio)
+    let b: string | number = Math.round(b1 * (1 - ratio) + b2 * ratio)
+    r = ('0' + (r || 0).toString(16)).slice(-2)
+    g = ('0' + (g || 0).toString(16)).slice(-2)
+    b = ('0' + (b || 0).toString(16)).slice(-2)
+    return '#' + r + g + b
+}
+const colorToRGB = (str: string) => {
+    var reg = /^#([0-9a-fA-f]{3}|[0-9a-fA-f]{6})$/;
+    // 把颜色值变成小写
+    var color = str.toLowerCase();
+    if (reg.test(color)) {
+        // 如果只有三位的值，需变成六位，如：#fff => #ffffff
+        if (color.length === 4) {
+            var colorNew = "#";
+            for (var i = 1; i < 4; i += 1) {
+                colorNew += color.slice(i, i + 1).concat(color.slice(i, i + 1));
+            }
+            color = colorNew;
+        }
+        // 处理六位的颜色值，转为RGB
+        var colorChange = [];
+        for (var i = 1; i < 7; i += 2) {
+            colorChange.push(parseInt("0x" + color.slice(i, i + 2)));
+        }
+        return colorChange
+    } else {
+        return [];
+    }
+}
+const colorBrightness = (color: Array<number>) => {
+    if(color.length!==3) return "#ffffff"
+    let $grayLevel = color[0] * 0.299 + color[1] * 0.587 + color[2] * 0.114;
+    if ($grayLevel >= 192) {
+        return "#000000";
+    } else {
+        return "#ffffff"
+    }
+}
+const buttonStyle = computed(() => {
+    let style: any = {}
+    if (props.color) {
+        const textColor=colorBrightness(colorToRGB(props.color));
+        if (!props.plain) {
+            style['--vi-button-color'] = textColor;
+            style['--vi-button-bgcolor'] = props.color;
+            style['--vi-button-hover-color'] = textColor;
+            style["--vi-button-hover-bgcolor"] = colourBlend(props.color, '#ffffff', 1)
+            style["--vi-button-active-color"] = textColor
+            style["--vi-button-active-bgcolor"] = colourBlend(props.color, '#000000', 2)
+            style["--vi-button-border-color"] = props.color
+            style["--vi-button-disable-bgcolor"] = colourBlend(props.color, '#ffffff', 2)
+            style["--vi-button-disable-color"] = props.color
+            style["--vi-button-disable-border-color"] = colourBlend(props.color, '#ffffff', 2)
+        }
+        else {
+            style['--vi-button-color'] = props.color;
+            style['--vi-button-bgcolor'] = colourBlend(props.color, '#ffffff', 8);
+            style['--vi-button-hover-color'] = textColor;
+            style["--vi-button-hover-bgcolor"] = colourBlend(props.color, '#ffffff', 1)
+            style["--vi-button-active-color"] = textColor
+            style["--vi-button-active-bgcolor"] = colourBlend(props.color, '#000000', 2)
+            style["--vi-button-border-color"] = props.color
+            style["--vi-button-disable-bgcolor"] = colourBlend(props.color, '#ffffff', 9)
+            style["--vi-button-disable-color"] = colourBlend(props.color, '#ffffff', 2)
+            style["--vi-button-disable-border-color"] = colourBlend(props.color, '#ffffff', 2)
+        }
+    }
+    return style
+})
 </script>
 <style lang="scss" scoped>
 .vi-button {
-    $color: #fff;
+    --vi-button-color: #000;
+    --vi-button-bgcolor: #fff;
+    --vi-button-hover-color: #000;
+    --vi-button-hover-bgcolor: #fff;
+    --vi-button-active-color: #000;
+    --vi-button-active-bgcolor: #fff;
+    --vi-button-border-color: #000;
+    --vi-button-disable-bgcolor: #f7f7f7;
+    --vi-button-disable-color: #747474;
+    --vi-button-disable-border-color: #686767;
+    color: var(--vi-button-color);
+    background-color: var(--vi-button-bgcolor);
     padding: 8px 15px;
     cursor: pointer;
     border-radius: 5px;
-    color: #000;
     border: 1px solid #000;
     vertical-align: middle;
     height: 32px;
     display: inline-flex;
-    border-color: #dcdfe6;
-    color: #000;
-    background-color: #fff;
+    border-color: var(--vi-button-border-color);
+
+    // color: #000;
+    &:not(:last-child) {
+        margin-right: 10px;
+    }
 
     & [class*=vi-icon]+span {
         margin-left: 6px;
     }
 
 
-
     &:hover {
-        // border-color: linght-color($color, 1);
-        background-color: linght-color($color, 1);
+        color: var(--vi-button-hover-color);
+        background-color: var(--vi-button-hover-bgcolor);
     }
 
     &:active {
-        border-color: dark-color($color, 1);
-        background-color: dark-color($color, 1);
+        color: var(--vi-button-active-color);
+        background-color: var(--vi-button-active-bgcolor);
     }
 
     &.is-circle {
@@ -99,18 +190,8 @@ const isVertical = computed(() => {
 
     }
 
-    &.is-disabled {
-        cursor: no-drop;
-        border-color: linght-color(#dcdfe6, 2);
-        background-color: linght-color($color, 4);
-
-        &:hover {
-            background-color: linght-color($color, 4);
-        }
-
-        &:active {
-            background-color: linght-color($color, 4);
-        }
+    &.is-round {
+        border-radius: 20px;
     }
 
     .vi-button-span {
@@ -118,60 +199,95 @@ const isVertical = computed(() => {
         align-items: center;
     }
 
-
-}
-
-.vi-button-round {
-    border-radius: 20px;
-}
-
-@each $key,
-$color in $colors {
-    .vi-button-#{$key} {
-        background-color: $color;
-        border: 1px solid $color;
-        color: #fff;
-
-        &:hover {
-            border-color: linght-color($color, 2);
-            background-color: linght-color($color, 2);
-        }
-
-        &:active {
-            border-color: dark-color($color, 1);
-            background-color: dark-color($color, 1);
-        }
-
-        
-
-        &.is-plain {
-            color: $color;
-            background-color: linght-color($color, 8);
-
-            &:hover {
-                background-color: $color;
-                color: #fff;
-            }
-
-            &:active {
-                background-color: dark-color($color, 1);
-            }
-        }
-        &.is-disabled {
-            color: linght-color($color, 4);
-            border-color: linght-color($color, 6);
-            background-color: linght-color($color, 9);
-
-            &:hover {
-                color: linght-color($color, 4);
-                background-color: linght-color($color, 9);
-            }
-
-            &:active {
-                color: linght-color($color, 4);
-                background-color: linght-color($color, 9);
-            }
-        }
-
+    &.is-disabled {
+        cursor: no-drop;
+        background-color: var(--vi-button-disable-bgcolor);
+        color: var(--vi-button-disable-color);
+        border-color: var(--vi-button-disable-border-color);
     }
-}</style>
+
+    @each $key, $color in $colors {
+        &.vi-button-#{$key} {
+            --vi-button-color: #fff;
+            --vi-button-bgcolor: var(--vi-color-#{$key});
+            --vi-button-border-color: var(--vi-color-#{$key});
+            --vi-button-disable-color: var(--vi-button-color);
+            --vi-button-disable-bgcolor: var(--vi-color-light-#{$key}-2);
+            --vi-button-disable-border-color: var(--vi-color-light-#{$key}-2);
+            --vi-button-hover-bgcolor: var(--vi-color-light-#{$key}-1);
+            --vi-button-hover-color: var(--vi-button-color);
+            --vi-button-active-bgcolor: var(--vi-color-dark-#{$key}-1);
+            --vi-button-active-color: var(--vi-button-color);
+
+            &.is-plain {
+                --vi-button-bgcolor: var(--vi-color-light-#{$key}-8);
+                --vi-button-color: var(--vi-color-#{$key});
+                --vi-button-hover-bgcolor: var(--vi-color-#{$key});
+                --vi-button-hover-color: #fff;
+                --vi-button-active-bgcolor: var(--vi-color-dark-#{$key}-1);
+                --vi-button-active-color: var(--vi-button-color);
+                --vi-button-disable-bgcolor: var(--vi-color-light-#{$key}-9);
+                --vi-button-disable-color: var(--vi-color-light-#{$key}-1);
+
+            }
+        }
+    }
+
+
+
+}
+
+
+
+// @each $key,
+// $color in $colors {
+//     .vi-button-#{$key} {
+//         background-color: $color;
+//         border: 1px solid $color;
+//         color: #fff;
+
+//         &:hover {
+//             border-color: linght-color($color, 2);
+//             background-color: linght-color($color, 2);
+//         }
+
+//         &:active {
+//             border-color: dark-color($color, 1);
+//             background-color: dark-color($color, 1);
+//         }
+
+
+
+//         &.is-plain {
+//             color: $color;
+//             background-color: linght-color($color, 8);
+
+//             &:hover {
+//                 background-color: $color;
+//                 color: #fff;
+//             }
+
+//             &:active {
+//                 background-color: dark-color($color, 1);
+//             }
+//         }
+
+//         &.is-disabled {
+//             color: linght-color($color, 4);
+//             border-color: linght-color($color, 6);
+//             background-color: linght-color($color, 9);
+
+//             &:hover {
+//                 color: linght-color($color, 4);
+//                 background-color: linght-color($color, 9);
+//             }
+
+//             &:active {
+//                 color: linght-color($color, 4);
+//                 background-color: linght-color($color, 9);
+//             }
+//         }
+
+//     }
+// }
+</style>

@@ -1,0 +1,9 @@
+@mixin set-var($name, $value) {
+  $var: '-';
+  @each $n in $name {
+    @if $n != '' {
+      $var: #{$var}-#{$n};
+    }
+  }
+  #{$var}: #{$value};
+}
