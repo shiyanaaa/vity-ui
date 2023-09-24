@@ -46,7 +46,7 @@ const iconClass = computed(() => {
 .icon {
     width: 1em;
     height: 1em;
-    vertical-align: bottom;
+    vertical-align: middle;
     fill: currentColor;
     overflow: hidden;
 

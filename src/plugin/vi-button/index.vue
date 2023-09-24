@@ -25,7 +25,8 @@ interface Props {
     square?: boolean,
     color?: string,
     loading?: boolean,
-    loadIcon?: string
+    loadIcon?: string,
+    size: 'default' | 'large' | 'small' | ''
 }
 
 const props = defineProps<Props>()
@@ -37,6 +38,7 @@ const className = computed(() => {
     props.circle ? nameList.push(`is-circle`) : ""
     props.square ? nameList.push(`is-square`) : ""
     props.disabled ? nameList.push(`is-disabled`) : ""
+    typeof props.size === 'string' ? nameList.push(`vi-button-${props.size}`) : ''
     return nameList
 })
 const isVertical = computed(() => {
@@ -97,7 +99,7 @@ const colorToRGB = (str: string) => {
     }
 }
 const colorBrightness = (color: Array<number>) => {
-    if(color.length!==3) return "#ffffff"
+    if (color.length !== 3) return "#ffffff"
     let $grayLevel = color[0] * 0.299 + color[1] * 0.587 + color[2] * 0.114;
     if ($grayLevel >= 192) {
         return "#000000";
@@ -108,7 +110,7 @@ const colorBrightness = (color: Array<number>) => {
 const buttonStyle = computed(() => {
     let style: any = {}
     if (props.color) {
-        const textColor=colorBrightness(colorToRGB(props.color));
+        const textColor = colorBrightness(colorToRGB(props.color));
         if (!props.plain) {
             style['--vi-button-color'] = textColor;
             style['--vi-button-bgcolor'] = props.color;
@@ -156,9 +158,20 @@ const buttonStyle = computed(() => {
     border-radius: 5px;
     border: 1px solid #000;
     vertical-align: middle;
-    height: 32px;
+    height: var(--vi-button-height, 32px);
     display: inline-flex;
     border-color: var(--vi-button-border-color);
+
+    &.vi-button-small {
+        --vi-button-height: var(--vi-height-small);
+        padding: 5px 11px;
+        font-size: 12px;
+    }
+    &.vi-button-large {
+        --vi-button-height: var(--vi-height-large);
+        padding: 12px 19px;
+    }
+    
 
     // color: #000;
     &:not(:last-child) {

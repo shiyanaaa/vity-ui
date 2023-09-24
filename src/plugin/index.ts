@@ -3,13 +3,27 @@ import ViButton from './vi-button/index.vue'
 import ViIcon from './vi-icon/index.vue'
 import ViSelect from './vi-select/index.vue'
 import ViInput from './vi-input/index.vue'
+import ViForm from './vi-form/index.vue'
+import ViFormItem from './vi-form-item/index.vue'
+import ViContainer from './vi-container/container.vue'
+import ViMain from './vi-container/main.vue'
+import ViHeader from './vi-container/header.vue'
+import ViAside from './vi-container/aside.vue'
+import ViFooter from './vi-container/footer.vue'
 import "./style.scss"
 // 所有组件列表
 const components = [
   ViButton,
   ViIcon,
   ViSelect,
-  ViInput
+  ViInput,
+  ViForm,
+  ViFormItem,
+  ViContainer,
+  ViMain,
+  ViHeader,
+  ViAside,
+  ViFooter
 ]
 
 // 定义 install 方法
@@ -30,7 +44,14 @@ export {
   ViButton,
   ViIcon,
   ViSelect,
-  ViInput
+  ViInput,
+  ViForm,
+  ViFormItem,
+  ViContainer,
+  ViMain,
+  ViHeader,
+  ViAside,
+  ViFooter
 }
 
 const VityUI = {

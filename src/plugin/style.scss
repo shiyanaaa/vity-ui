@@ -11,4 +11,7 @@
       @include set-var(('vi', 'color', 'dark', $name, $num), mix(#000, $color, 10% * $num));
     }
   }
+  @each $name, $height in $heights {
+    @include set-var(('vi', 'height',  $name), $height);
+  }
 }
