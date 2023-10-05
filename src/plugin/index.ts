@@ -10,6 +10,7 @@ import ViMain from './vi-container/main.vue'
 import ViHeader from './vi-container/header.vue'
 import ViAside from './vi-container/aside.vue'
 import ViFooter from './vi-container/footer.vue'
+import ViMessage from './vi-message/index'
 import "./style.scss"
 // 所有组件列表
 const components = [
@@ -23,7 +24,8 @@ const components = [
   ViMain,
   ViHeader,
   ViAside,
-  ViFooter
+  ViFooter,
+  // ViMessage
 ]
 
 // 定义 install 方法
@@ -51,7 +53,8 @@ export {
   ViMain,
   ViHeader,
   ViAside,
-  ViFooter
+  ViFooter,
+  ViMessage
 }
 
 const VityUI = {

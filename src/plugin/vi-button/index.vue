@@ -26,7 +26,7 @@ interface Props {
     color?: string,
     loading?: boolean,
     loadIcon?: string,
-    size: 'default' | 'large' | 'small' | ''
+    size?: 'default' | 'large' | 'small' | ''
 }
 
 const props = defineProps<Props>()
@@ -250,57 +250,4 @@ const buttonStyle = computed(() => {
 
 }
 
-
-
-// @each $key,
-// $color in $colors {
-//     .vi-button-#{$key} {
-//         background-color: $color;
-//         border: 1px solid $color;
-//         color: #fff;
-
-//         &:hover {
-//             border-color: linght-color($color, 2);
-//             background-color: linght-color($color, 2);
-//         }
-
-//         &:active {
-//             border-color: dark-color($color, 1);
-//             background-color: dark-color($color, 1);
-//         }
-
-
-
-//         &.is-plain {
-//             color: $color;
-//             background-color: linght-color($color, 8);
-
-//             &:hover {
-//                 background-color: $color;
-//                 color: #fff;
-//             }
-
-//             &:active {
-//                 background-color: dark-color($color, 1);
-//             }
-//         }
-
-//         &.is-disabled {
-//             color: linght-color($color, 4);
-//             border-color: linght-color($color, 6);
-//             background-color: linght-color($color, 9);
-
-//             &:hover {
-//                 color: linght-color($color, 4);
-//                 background-color: linght-color($color, 9);
-//             }
-
-//             &:active {
-//                 color: linght-color($color, 4);
-//                 background-color: linght-color($color, 9);
-//             }
-//         }
-
-//     }
-// }
 </style>

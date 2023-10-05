@@ -49,7 +49,7 @@ const iconClass = computed(() => {
     vertical-align: middle;
     fill: currentColor;
     overflow: hidden;
-
+    flex-shrink:0;
     &.icon-rotating {
         animation: rotation 2s linear infinite;
         -webkit-animation: rotation 2s linear infinite;
