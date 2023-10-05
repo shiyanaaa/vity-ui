@@ -167,11 +167,12 @@ const buttonStyle = computed(() => {
         padding: 5px 11px;
         font-size: 12px;
     }
+
     &.vi-button-large {
         --vi-button-height: var(--vi-height-large);
         padding: 12px 19px;
     }
-    
+
 
     // color: #000;
     &:not(:last-child) {
@@ -210,6 +211,8 @@ const buttonStyle = computed(() => {
     .vi-button-span {
         display: inline-flex;
         align-items: center;
+        height: 1em;
+        line-height: 1em;
     }
 
     &.is-disabled {
@@ -249,5 +252,4 @@ const buttonStyle = computed(() => {
 
 
 }
-
 </style>
