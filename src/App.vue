@@ -1,23 +1,35 @@
 <script setup lang="ts">
-// import {ViButton,ViIcon} from 'vity-ui'
+import { ViMessage } from "@/plugin"
 import { ref, watch } from "vue"
-// import { ViMessage } from "./plugin";
-import test from "./components/test.vue";
-import tests from "./components/tests.vue";
-// import ViMessage from "./plugin/vi-message/index.vue";
-// const Msg=ref()
 const form = ref({
-  username: "和H和",
+  username: true,
   password: "213"
 })
-
+interface Tree {
+  label: string
+  value: string
+  children?: Tree[]
+}
+const treeData = ref<Tree[]>([
+  { label: '测试1', value: '1', children: [{ label: '测试1-1', value: '1-1', children: [{ label: '测试1-1-1', value: '1-1-1' }] }] },
+  { label: '测试2', value: '2' },
+])
+const change = (e: boolean) => {
+  ViMessage.success(`当前为：${e}`)
+}
 </script>
 
 <template>
   <div style="width: 100vw;height: 50vh;">
-    <test></test>
-    <tests></tests>
-    
+    <ViMenu :data="treeData">
+      <ViMenuItem v-for="item in treeData" :label="item.label">
+        <ViMenuItem v-for="item1 in item.children" :label="item1.label">
+          <ViMenuItem v-for="item11 in item1.children" :label="item11.label">
+
+          </ViMenuItem>
+        </ViMenuItem>
+      </ViMenuItem>
+    </ViMenu>
   </div>
 </template>
 

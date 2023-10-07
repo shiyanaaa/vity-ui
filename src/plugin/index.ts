@@ -11,6 +11,9 @@ import ViHeader from './vi-container/header.vue'
 import ViAside from './vi-container/aside.vue'
 import ViFooter from './vi-container/footer.vue'
 import ViMessage from './vi-message/index'
+import ViSwitch from './vi-switch/index.vue'
+import ViMenu from './vi-menu/index.vue'
+import ViMenuItem from './vi-menu/item.vue'
 import "./style.scss"
 // 所有组件列表
 const components = [
@@ -25,6 +28,9 @@ const components = [
   ViHeader,
   ViAside,
   ViFooter,
+  ViSwitch,
+  ViMenu,
+  ViMenuItem
   // ViMessage
 ]
 
@@ -54,7 +60,10 @@ export {
   ViHeader,
   ViAside,
   ViFooter,
-  ViMessage
+  ViMessage,
+  ViSwitch,
+  ViMenu,
+  ViMenuItem
 }
 
 const VityUI = {
