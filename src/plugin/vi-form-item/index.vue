@@ -8,14 +8,12 @@
     
 <script setup lang='ts' name="ViFormItem">
 import { computed } from 'vue'
-const props = defineProps({
-    label: {
-        type: String,
-        default: ''
-    }
-
-
-})
+interface Props {
+    label?: string
+}
+const props = withDefaults(defineProps<Props>(),{
+    label: ''
+} )
 const className = computed(() => {
     let nameList = ['vi-form-item']
 

@@ -7,23 +7,17 @@
 <script setup lang='ts' name="ViIcon">
 import { computed } from 'vue';
 import "@/assets/fonts/iconfont.js"
-const props = defineProps({
-    name: {
-        type: String,
-        default: ''
-    },
-    size: {
-        type: Number,
-        default: 14
-    },
-    color: {
-        type: String,
-        default: "inherit"
-    },
-    rotating: {
-        type: Boolean,
-        default: false
-    }
+interface Props {
+    name?: string,
+    size?: number,
+    color?: string,
+    rotating?: boolean
+}
+const props = withDefaults(defineProps<Props>(),{
+    name: '',
+    size: 14,
+    color: "inherit",
+    rotating: false
 })
 const iconStyle = computed(() => {
 

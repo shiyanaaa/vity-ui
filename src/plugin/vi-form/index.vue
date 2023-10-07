@@ -5,16 +5,15 @@
     
 <script setup lang='ts' name="ViForm">
 import { computed } from 'vue'
-const props = defineProps({
-    labelWidth: {
-        type: String,
-        default: '120px'
-    },
-    labelPosition: {
-        type: String,
-        default: 'right'
-    },
-})
+interface Props {
+    labelWidth?: string,
+    labelPosition?: string
+}
+const props = withDefaults(defineProps<Props>(),{
+    labelWidth: '120px',
+    labelPosition: 'right'
+} )
+
 const style = computed(() => {
     return {
         '--vi-form-item-label-width': props.labelWidth,

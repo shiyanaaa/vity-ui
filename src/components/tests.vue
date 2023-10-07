@@ -1,6 +1,6 @@
 <template>
-  <ViButton @click="onclick5">123</ViButton>
-  <ViButton @click="onclick" type="error">123</ViButton>
+  <ViButton type="success" @click="onclick5">单行提示</ViButton>
+  <ViButton @click="onclick" type="error">全部关闭</ViButton>
 </template>
   
 <script setup lang='ts'>

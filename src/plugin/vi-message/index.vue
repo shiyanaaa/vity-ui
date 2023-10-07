@@ -10,39 +10,25 @@
 <script setup lang='ts'>
 import { computed, onMounted, ref, defineExpose } from 'vue';
 import ViIcon from '../vi-icon/index.vue'
-const props = defineProps({
-        type: {
-                type: String,
-                default: 'info'
-        },
-        icon: {
-                type: String,
-                default: ''
-        },
-        message: {
-                type: String,
-                default: ''
-        },
-        duration: {
-                type: Number,
-                default: 3000
-        },
-        showClose: {
-                type: Boolean,
-                default: false
-        },
-        onClose: {
-                type: Function,
-                default: () => { }
-        },
-        offset: {
-                type: Number,
-                default: 10
-        },
-        onDestroy: {
-                type: Function,
-                default: () => { }
-        }
+interface Props {
+        type?: 'primary'|'success' | 'info' | 'warning' | 'error',
+        icon?: string,
+        message?: string,
+        duration?: number,
+        showClose?: boolean,
+        onClose?: () => void,
+        offset?: number,
+        onDestroy?: () => void
+}
+const props=withDefaults(defineProps<Props>(),{
+        type:'info',
+        icon:'',
+        message:'',
+        duration:3000,
+        showClose:false,
+        onClose:()=>{},
+        offset:10,
+        onDestroy:()=>{}
 })
 const status = ref('enter')
 const style = computed(() => {

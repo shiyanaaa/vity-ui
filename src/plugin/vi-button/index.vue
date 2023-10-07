@@ -29,7 +29,20 @@ interface Props {
     size?: 'default' | 'large' | 'small' | ''
 }
 
-const props = defineProps<Props>()
+const props = withDefaults(defineProps<Props>(),{
+    type:'default',
+    icon: '',
+    round: false,
+    plain: false,
+    circle: false,
+    disabled: false,
+    square: false,
+    color: '',
+    loading: false,
+    loadIcon: '',
+    size: ''
+
+})
 const className = computed(() => {
     let nameList = ['vi-button']
     props.type ? nameList.push(`vi-button-${props.type}`) : nameList.push(`vi-button-default`)

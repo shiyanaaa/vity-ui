@@ -26,37 +26,25 @@
 import { computed, ref, useSlots } from 'vue';
 import ViIcon from '../vi-icon/index.vue'
 const uSlots = useSlots()
-
-const props = defineProps({
-    modelValue: {
-        type: String,
-        default: ''
-    },
-    size: {
-        type: String,
-        default: ''
-    },
-    prefixIcon: {
-        type: String,
-        default: ''
-    },
-    suffixIcon: {
-        type: String,
-        default: ''
-    },
-    disabled: {
-        type: Boolean,
-        default: false
-    },
-    type: {
-        type: String,
-        default: 'text'
-    },
-    width:{
-        type:String,
-        default:'100%'
-    }
+interface Props {
+    modelValue?: string,
+    size?: 'default' | 'large' | 'small' | '',
+    prefixIcon?: string,
+    suffixIcon?: string,
+    disabled?: boolean,
+    type?: string,
+    width?:string
+}
+const props = withDefaults(defineProps<Props>(), {
+    modelValue: '',
+    size: '',
+    prefixIcon: '',
+    suffixIcon: '',
+    disabled: false,
+    type: 'text',
+    width:'100%'
 })
+
 
 const value = computed({
     get: () => props.modelValue || '',
