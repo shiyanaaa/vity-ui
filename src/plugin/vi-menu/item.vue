@@ -1,13 +1,14 @@
 <template>
-  <div :class="className" :style="style" >
-    <div class="vi-menu-item-inner" @click.stop="itemClick">
+  <div :class="className" :style="style">
+    <div v-if="!props.isGroup" class="vi-menu-item-inner" @click.stop="itemClick">
       <span class="vi-menu-item-label">{{ props.label }}</span>
       <span class="vi-menu-item-right">
-        <ViIcon v-if="isSlot || (showChildren && hasChild)" name="xiayiyeqianjinchakangengduo"  />
+        <ViIcon v-if="isSlot || (showChildren && hasChild)" name="xiayiyeqianjinchakangengduo" />
       </span>
-      
     </div>
-
+    <div v-else class="vi-menu-item-group">
+      <span class="vi-menu-item-group-label">{{ props.label }}</span>
+    </div>
     <div v-if="isSlot" class="vi-menu-item-child">
       <slot></slot>
     </div>
@@ -19,14 +20,20 @@
         :showChildren="props.showChildren"
         :label="item.label"
         :key="item.id"
-        :level="props.level+1"
+        :level="props.level + 1"
+        :link="item.link"
+        :index="item.index"
+        :isGroup="item.isGroup"
       ></ViMenuItem>
     </div>
   </div>
 </template>
 
 <script setup lang="ts" name="ViMenuItem">
-import { computed, useSlots, Comment, ref } from 'vue'
+import { computed, useSlots, Comment, ref, inject } from 'vue'
+const activeIndex = ref(inject('activeIndex'))
+const nodeClick = inject('nodeClick') as Function
+const emit = defineEmits(['nodeClick'])
 import ViIcon from '../vi-icon/index.vue'
 const uSlots = useSlots()
 interface Props {
@@ -34,23 +41,29 @@ interface Props {
   showChildren?: boolean
   children?: any
   closeIcon?: string
-  openIcon?: string,
-  level?:number
+  openIcon?: string
+  level?: number
+  link?: string
+  index: string
+  isGroup?: boolean
 }
 const props = withDefaults(defineProps<Props>(), {
   showChildren: false,
   closeIcon: 'xiayiyeqianjinchakangengduo',
   openIcon: 'xiangxiazhankai',
-  level:1
+  level: 1,
+  link: '',
+  isGroup: false
 })
 const className = computed(() => {
   let nameList = ['vi-menu-item']
-  open.value?nameList.push('is-open'):''
+  open.value || props.isGroup ? nameList.push('is-open') : ''
+  activeIndex.value === props.index ? nameList.push('is-active') : ''
   return nameList
 })
 const style = computed(() => {
-  let styleList:any = {}
-  styleList['--vi-menu-level']=props.level||1
+  let styleList: any = {}
+  styleList['--vi-menu-level'] = props.level || 1
   return styleList
 })
 const hasChild = computed(() => {
@@ -74,44 +87,68 @@ const open = ref(false)
 const iconName = computed(() => {
   return open.value ? props.openIcon : props.closeIcon
 })
-const itemClick=()=>{
+const itemClick = () => {
   open.value = !open.value
+
+  isSlot.value || (props.showChildren && hasChild.value) || nodeClick(props.index)
 }
 </script>
 
 <style lang="scss" scoped>
-.vi-menu-item{
+.vi-menu-item {
   counter-increment: section;
-  width:100%;
-  --vi-menu-item-right-rotate:rotateZ(0);
-  --vi-menu-item-child-height:0;
-  &.is-open{
-    --vi-menu-item-right-rotate:rotateZ(90deg);
-    --vi-menu-item-child-height:1000px;
+  width: 100%;
+  --vi-menu-item-right-rotate: rotateZ(0);
+  --vi-menu-item-child-height: 0;
+  --vi-menu-item-color: #000;
+  --vi-menu-item-active-color: var(--vi-color-primary);
+  &.is-active {
+    --vi-menu-item-color: var(--vi-menu-item-active-color);
   }
-  .vi-menu-item-inner{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    padding:20px;
-    cursor:pointer;
-    .vi-menu-item-label{
-      padding-left:calc(10px * var(--vi-menu-level));
-    }
-    &:hover{
-      background-color:var(--vi-color-light-primary-9)
-    }
-    .vi-menu-item-right{
-      display:flex;
-      transform-origin:center;
-      transform: var(--vi-menu-item-right-rotate) ;
-      transition:all .3s;
+  &.is-open {
+    --vi-menu-item-right-rotate: rotateZ(90deg);
+    --vi-menu-item-child-height: 1000px;
+  }
+  .vi-menu-item-group{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 20px;
+    .vi-menu-item-group-label {
+      white-space: nowrap;
+      line-height: normal;
+      font-size: 12px;
+      color: #909399;
+      padding-left: calc(10px * var(--vi-menu-level));
     }
   }
-  .vi-menu-item-child{
-    transition:all .5s;
-    max-height:var(--vi-menu-item-child-height);
-    overflow:hidden;
+  .vi-menu-item-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 20px;
+    cursor: pointer;
+
+    .vi-menu-item-label {
+      transition: color 0.3s;
+      padding-left: calc(10px * var(--vi-menu-level));
+      color: var(--vi-menu-item-color);
+    }
+    
+    &:hover {
+      background-color: var(--vi-color-light-primary-9);
+    }
+    .vi-menu-item-right {
+      display: flex;
+      transform-origin: center;
+      transform: var(--vi-menu-item-right-rotate);
+      transition: all 0.3s;
+    }
+  }
+  .vi-menu-item-child {
+    transition: all 0.5s;
+    max-height: var(--vi-menu-item-child-height);
+    overflow: hidden;
   }
 }
 </style>
