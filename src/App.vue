@@ -20,15 +20,15 @@ const change = (e: boolean) => {
 </script>
 
 <template>
-  <div style="width: 100vw;height: 50vh;">
+  <div style="width: 100vw;height: 100vh;">
     <ViMenu :data="treeData">
-      <ViMenuItem v-for="item in treeData" :label="item.label">
+      <!-- <ViMenuItem v-for="item in treeData" :label="item.label">
         <ViMenuItem v-for="item1 in item.children" :label="item1.label">
           <ViMenuItem v-for="item11 in item1.children" :label="item11.label">
 
           </ViMenuItem>
         </ViMenuItem>
-      </ViMenuItem>
+      </ViMenuItem> -->
     </ViMenu>
   </div>
 </template>

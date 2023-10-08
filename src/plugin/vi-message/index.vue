@@ -8,7 +8,7 @@
 </template>
     
 <script setup lang='ts'>
-import { computed, onMounted, ref, defineExpose } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import ViIcon from '../vi-icon/index.vue'
 interface Props {
         type?: 'primary'|'success' | 'info' | 'warning' | 'error',
