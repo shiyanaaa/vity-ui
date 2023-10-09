@@ -1,7 +1,7 @@
 <template>
   <div :class="className" :style="style">
     <div v-if="!props.isGroup" class="vi-menu-item-inner" @click.stop="itemClick">
-      <span class="vi-menu-item-label">{{ props.label }}</span>
+      <span class="vi-menu-item-label">{{ props.label }}--{{ childHeight }}</span>
       <span class="vi-menu-item-right">
         <ViIcon v-if="isSlot || (showChildren && hasChild)" name="xiayiyeqianjinchakangengduo" />
       </span>
@@ -9,33 +9,38 @@
     <div v-else class="vi-menu-item-group">
       <span class="vi-menu-item-group-label">{{ props.label }}</span>
     </div>
-    <div v-if="isSlot" class="vi-menu-item-child">
-      <slot></slot>
-    </div>
+    <div class="vi-menu-child">
+      <div ref="menuItem" v-if="isSlot" class="vi-menu-item-child">
+        <slot></slot>
+      </div>
 
-    <div v-if="showChildren && hasChild" class="vi-menu-item-child">
-      <ViMenuItem
-        v-for="item in props.children"
-        :children="item.children"
-        :showChildren="props.showChildren"
-        :label="item.label"
-        :key="item.id"
-        :level="props.level + 1"
-        :link="item.link"
-        :index="item.index"
-        :isGroup="item.isGroup"
-      ></ViMenuItem>
+      <div ref="menuItem" v-else-if="showChildren && hasChild" class="vi-menu-item-child">
+        <ViMenuItem
+          v-for="item in props.children"
+          :children="item.children"
+          :showChildren="props.showChildren"
+          :label="item.label"
+          :key="item.id"
+          :level="props.level + 1"
+          :link="item.link"
+          :index="item.index"
+          :isGroup="item.isGroup"
+        ></ViMenuItem>
+      </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts" name="ViMenuItem">
-import { computed, useSlots, Comment, ref, inject } from 'vue'
+import { computed, useSlots, Comment, ref, inject, onMounted, watch, nextTick } from 'vue'
 const activeIndex = ref(inject('activeIndex'))
+const resetFlag = ref(inject('resetFlag'))
 const nodeClick = inject('nodeClick') as Function
+const reset = inject('reset') as Function
 const emit = defineEmits(['nodeClick'])
 import ViIcon from '../vi-icon/index.vue'
 const uSlots = useSlots()
+const menuItem = ref<HTMLInputElement | null>(null)
 interface Props {
   label: string
   showChildren?: boolean
@@ -47,6 +52,17 @@ interface Props {
   index: string
   isGroup?: boolean
 }
+watch(resetFlag, () => {
+  nextTick(() => {
+    if (menuItem.value) {
+      menuItem.value.style.height = 'auto'
+      const { height } = menuItem.value.getBoundingClientRect()
+      childHeight.value = height + 'px'
+    } else {
+      childHeight.value = '0'
+    }
+  })
+})
 const props = withDefaults(defineProps<Props>(), {
   showChildren: false,
   closeIcon: 'xiayiyeqianjinchakangengduo',
@@ -55,15 +71,17 @@ const props = withDefaults(defineProps<Props>(), {
   link: '',
   isGroup: false
 })
+const childHeight = ref<string>()
 const className = computed(() => {
   let nameList = ['vi-menu-item']
-  open.value || props.isGroup ? nameList.push('is-open') : ''
+  open.value || props.isGroup ? nameList.push('is-open') : nameList.push('is-close')
   activeIndex.value === props.index ? nameList.push('is-active') : ''
   return nameList
 })
 const style = computed(() => {
   let styleList: any = {}
   styleList['--vi-menu-level'] = props.level || 1
+  styleList['--vi-menu-child-height'] = childHeight.value
   return styleList
 })
 const hasChild = computed(() => {
@@ -88,13 +106,48 @@ const iconName = computed(() => {
   return open.value ? props.openIcon : props.closeIcon
 })
 const itemClick = () => {
-  open.value = !open.value
+  reset()
 
-  isSlot.value || (props.showChildren && hasChild.value) || nodeClick(props.index)
+  nextTick(() => {
+    !(isSlot.value || (props.showChildren && hasChild.value))||(open.value = !open.value)
+    isSlot.value || (props.showChildren && hasChild.value) || nodeClick(props.index)
+  })
 }
+onMounted(() => {
+  if (menuItem.value) {
+    menuItem.value.style.height = 'auto'
+    const { height } = menuItem.value.getBoundingClientRect()
+    childHeight.value = height + 'px'
+  } else {
+    childHeight.value = '0'
+  }
+})
 </script>
 
 <style lang="scss" scoped>
+@keyframes open {
+  0% {
+    height: 0;
+  }
+  99% {
+    height: var(--vi-menu-item-child-height);
+  }
+  100% {
+    height: auto;
+  }
+}
+@keyframes close {
+  0% {
+    height: auto;
+  }
+  1% {
+    height: var(--vi-menu-child-height);
+  }
+  100% {
+    height: 0;
+  }
+}
+
 .vi-menu-item {
   counter-increment: section;
   width: 100%;
@@ -107,9 +160,19 @@ const itemClick = () => {
   }
   &.is-open {
     --vi-menu-item-right-rotate: rotateZ(90deg);
-    --vi-menu-item-child-height: 1000px;
+    --vi-menu-item-child-height: var(--vi-menu-child-height);
+    .vi-menu-child {
+      animation: open 0.3s linear forwards;
+    }
   }
-  .vi-menu-item-group{
+  &.is-close {
+    --vi-menu-item-right-rotate: rotateZ(0);
+    // --vi-menu-item-child-height: 0;
+    .vi-menu-child {
+      animation: close 0.3s linear forwards;
+    }
+  }
+  .vi-menu-item-group {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -134,7 +197,7 @@ const itemClick = () => {
       padding-left: calc(10px * var(--vi-menu-level));
       color: var(--vi-menu-item-color);
     }
-    
+
     &:hover {
       background-color: var(--vi-color-light-primary-9);
     }
@@ -145,10 +208,10 @@ const itemClick = () => {
       transition: all 0.3s;
     }
   }
-  .vi-menu-item-child {
+  .vi-menu-child {
     transition: all 0.5s;
-    max-height: var(--vi-menu-item-child-height);
     overflow: hidden;
+    // height: var(--vi-menu-item-child-height);
   }
 }
 </style>

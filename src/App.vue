@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ViMessage } from '@/plugin'
-import { ref, watch } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 const form = ref({
   username: true,
   password: '213'
@@ -10,7 +10,6 @@ const treeData = ref([
   {
     index: '1',
     label: '测试1',
-    isGroup: true,
     children: [
       {
         label: '测试1-1',

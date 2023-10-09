@@ -39,6 +39,17 @@ provide(
     emit("update:modelValue",e);
   }
 )
+const resetFlag=ref(false)
+provide(
+  'reset',
+  ()=>{
+    resetFlag.value=!resetFlag.value;
+  }
+)
+provide(
+  'resetFlag',
+  computed(() => resetFlag.value)
+)
 const props = withDefaults(defineProps<Props>(), {
   // data:[]
   activeLink:false,
