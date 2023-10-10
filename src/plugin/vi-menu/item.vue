@@ -1,7 +1,7 @@
 <template>
   <div :class="className" :style="style">
     <div v-if="!props.isGroup" class="vi-menu-item-inner" @click.stop="itemClick">
-      <span class="vi-menu-item-label">{{ props.label }}--{{ childHeight }}</span>
+      <span class="vi-menu-item-label">{{ props.label }}</span>
       <span class="vi-menu-item-right">
         <ViIcon v-if="isSlot || (showChildren && hasChild)" name="xiayiyeqianjinchakangengduo" />
       </span>
@@ -34,9 +34,7 @@
 <script setup lang="ts" name="ViMenuItem">
 import { computed, useSlots, Comment, ref, inject, onMounted, watch, nextTick } from 'vue'
 const activeIndex = ref(inject('activeIndex'))
-const resetFlag = ref(inject('resetFlag'))
 const nodeClick = inject('nodeClick') as Function
-const reset = inject('reset') as Function
 const emit = defineEmits(['nodeClick'])
 import ViIcon from '../vi-icon/index.vue'
 const uSlots = useSlots()
@@ -52,17 +50,7 @@ interface Props {
   index: string
   isGroup?: boolean
 }
-watch(resetFlag, () => {
-  nextTick(() => {
-    if (menuItem.value) {
-      menuItem.value.style.height = 'auto'
-      const { height } = menuItem.value.getBoundingClientRect()
-      childHeight.value = height + 'px'
-    } else {
-      childHeight.value = '0'
-    }
-  })
-})
+
 const props = withDefaults(defineProps<Props>(), {
   showChildren: false,
   closeIcon: 'xiayiyeqianjinchakangengduo',
@@ -71,7 +59,6 @@ const props = withDefaults(defineProps<Props>(), {
   link: '',
   isGroup: false
 })
-const childHeight = ref<string>()
 const className = computed(() => {
   let nameList = ['vi-menu-item']
   open.value || props.isGroup ? nameList.push('is-open') : nameList.push('is-close')
@@ -81,7 +68,6 @@ const className = computed(() => {
 const style = computed(() => {
   let styleList: any = {}
   styleList['--vi-menu-level'] = props.level || 1
-  styleList['--vi-menu-child-height'] = childHeight.value
   return styleList
 })
 const hasChild = computed(() => {
@@ -106,71 +92,35 @@ const iconName = computed(() => {
   return open.value ? props.openIcon : props.closeIcon
 })
 const itemClick = () => {
-  reset()
-
   nextTick(() => {
-    !(isSlot.value || (props.showChildren && hasChild.value))||(open.value = !open.value)
+    !(isSlot.value || (props.showChildren && hasChild.value)) || (open.value = !open.value)
     isSlot.value || (props.showChildren && hasChild.value) || nodeClick(props.index)
   })
 }
-onMounted(() => {
-  if (menuItem.value) {
-    menuItem.value.style.height = 'auto'
-    const { height } = menuItem.value.getBoundingClientRect()
-    childHeight.value = height + 'px'
-  } else {
-    childHeight.value = '0'
-  }
-})
 </script>
 
 <style lang="scss" scoped>
-@keyframes open {
-  0% {
-    height: 0;
-  }
-  99% {
-    height: var(--vi-menu-item-child-height);
-  }
-  100% {
-    height: auto;
-  }
-}
-@keyframes close {
-  0% {
-    height: auto;
-  }
-  1% {
-    height: var(--vi-menu-child-height);
-  }
-  100% {
-    height: 0;
-  }
-}
-
 .vi-menu-item {
   counter-increment: section;
   width: 100%;
+  box-sizing: border-box;
   --vi-menu-item-right-rotate: rotateZ(0);
   --vi-menu-item-child-height: 0;
   --vi-menu-item-color: #000;
   --vi-menu-item-active-color: var(--vi-color-primary);
   &.is-active {
     --vi-menu-item-color: var(--vi-menu-item-active-color);
+    border-right: 3px solid var(--vi-menu-item-color);
   }
   &.is-open {
     --vi-menu-item-right-rotate: rotateZ(90deg);
-    --vi-menu-item-child-height: var(--vi-menu-child-height);
-    .vi-menu-child {
-      animation: open 0.3s linear forwards;
-    }
+    --vi-menu-item-child-height: auto;
+    --vi-menu-item-fr:1fr;
   }
   &.is-close {
     --vi-menu-item-right-rotate: rotateZ(0);
-    // --vi-menu-item-child-height: 0;
-    .vi-menu-child {
-      animation: close 0.3s linear forwards;
-    }
+    --vi-menu-item-child-height: 0;
+    --vi-menu-item-fr:0fr;
   }
   .vi-menu-item-group {
     display: flex;
@@ -196,6 +146,7 @@ onMounted(() => {
       transition: color 0.3s;
       padding-left: calc(10px * var(--vi-menu-level));
       color: var(--vi-menu-item-color);
+      flex: 1;
     }
 
     &:hover {
@@ -211,7 +162,11 @@ onMounted(() => {
   .vi-menu-child {
     transition: all 0.5s;
     overflow: hidden;
-    // height: var(--vi-menu-item-child-height);
+    display: grid;
+    grid-template-rows: var(--vi-menu-item-fr);
+  }
+  .vi-menu-item-child {
+    min-height: 0;
   }
 }
 </style>
