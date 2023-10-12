@@ -62,7 +62,7 @@ const index = ref('3')
 
 <template>
   <div style="width: 100vw; height: 100vh; display: flex">
-    <ViMenu :data="treeData" v-model="index"> </ViMenu>
+    <ViMenu rightBorder  activeFontColor="#EC407A" activeBackColor="#FCE4EC" :data="treeData" v-model="index"> </ViMenu>
     {{ index }}
   </div>
 </template>

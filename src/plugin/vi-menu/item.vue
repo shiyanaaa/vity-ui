@@ -1,6 +1,11 @@
 <template>
   <div :class="className" :style="style">
-    <div v-if="!props.isGroup" class="vi-menu-item-inner" @click.stop="itemClick">
+    <div
+      v-if="!props.isGroup"
+      class="vi-menu-item-inner"
+      :class="{ 'no-child': !hasChild }"
+      @click.stop="itemClick"
+    >
       <span class="vi-menu-item-label">{{ props.label }}</span>
       <span class="vi-menu-item-right">
         <ViIcon v-if="isSlot || (showChildren && hasChild)" name="xiayiyeqianjinchakangengduo" />
@@ -10,11 +15,11 @@
       <span class="vi-menu-item-group-label">{{ props.label }}</span>
     </div>
     <div class="vi-menu-child">
-      <div ref="menuItem" v-if="isSlot" class="vi-menu-item-child">
+      <div v-if="isSlot" class="vi-menu-item-child">
         <slot></slot>
       </div>
 
-      <div ref="menuItem" v-else-if="showChildren && hasChild" class="vi-menu-item-child">
+      <div v-else-if="showChildren && hasChild" class="vi-menu-item-child">
         <ViMenuItem
           v-for="item in props.children"
           :children="item.children"
@@ -106,21 +111,26 @@ const itemClick = () => {
   box-sizing: border-box;
   --vi-menu-item-right-rotate: rotateZ(0);
   --vi-menu-item-child-height: 0;
-  --vi-menu-item-color: #000;
-  --vi-menu-item-active-color: var(--vi-color-primary);
+  --vi-menu-item-back-color: var(--vi-menu-back-color);
+  --vi-menu-item-font-color: var(--vi-menu-font-color);
+
   &.is-active {
-    --vi-menu-item-color: var(--vi-menu-item-active-color);
-    border-right: 3px solid var(--vi-menu-item-color);
+    // border:none;
+
+    --vi-menu-item-back-color: var(--vi-menu-back-active-color);
+    --vi-menu-item-font-color: var(--vi-menu-font-active-color);
+    --vi-menu-item-border-left-color:var(--vi-menu-border-left-color, transparent);
+    --vi-menu-item-border-right-color:var(--vi-menu-border-right-color, transparent);
   }
   &.is-open {
     --vi-menu-item-right-rotate: rotateZ(90deg);
     --vi-menu-item-child-height: auto;
-    --vi-menu-item-fr:1fr;
+    --vi-menu-item-fr: 1fr;
   }
   &.is-close {
     --vi-menu-item-right-rotate: rotateZ(0);
     --vi-menu-item-child-height: 0;
-    --vi-menu-item-fr:0fr;
+    --vi-menu-item-fr: 0fr;
   }
   .vi-menu-item-group {
     display: flex;
@@ -141,16 +151,20 @@ const itemClick = () => {
     justify-content: space-between;
     padding: 10px 20px;
     cursor: pointer;
-
+    background-color: var(--vi-menu-item-back-color);
+    transition: all 0.3s;
+    border-left: var(--vi-menu-border-size,3px) solid var(--vi-menu-item-border-left-color, transparent);
+    border-right: var(--vi-menu-border-size,3px) solid var(--vi-menu-item-border-right-color, transparent);
     .vi-menu-item-label {
       transition: color 0.3s;
       padding-left: calc(10px * var(--vi-menu-level));
-      color: var(--vi-menu-item-color);
+      color: var(--vi-menu-item-font-color);
       flex: 1;
     }
 
-    &:hover {
-      background-color: var(--vi-color-light-primary-9);
+    &.no-child:hover {
+      --vi-menu-item-back-color: var(--vi-menu-back-active-color);
+      --vi-menu-item-font-color: var(--vi-menu-font-active-color);
     }
     .vi-menu-item-right {
       display: flex;

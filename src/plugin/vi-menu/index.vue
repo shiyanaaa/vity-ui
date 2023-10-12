@@ -27,7 +27,14 @@ interface Props {
   modelValue:string,
   data?: Tree[],
   activeLink?:boolean,
-  collapse?:boolean
+  collapse?:boolean,
+  activeFontColor?:string,
+  activeBackColor?:string,
+  fontColor?:string,
+  backColor?:string,
+  leftBorder?:boolean,
+  rightBorder?:boolean,
+  borderSize?:string
 }
 provide(
   'activeIndex',
@@ -53,7 +60,10 @@ provide(
 const props = withDefaults(defineProps<Props>(), {
   // data:[]
   activeLink:false,
-  collapse:false
+  collapse:false,
+  leftBorder:false,
+  rightBorder:false,
+  borderSize:'3px'
 })
 const className = computed(() => {
   let nameList = ['vi-menu']
@@ -61,7 +71,14 @@ const className = computed(() => {
   return nameList
 })
 const style = computed(() => {
-  let styleList = {}
+  let styleList:any = {}
+  props.activeFontColor?(styleList['--vi-menu-font-active-color']=props.activeFontColor):''
+  props.activeBackColor?(styleList['--vi-menu-back-active-color']=props.activeBackColor):''
+  props.fontColor?(styleList['--vi-menu-font-color']=props.fontColor):''
+  props.backColor?(styleList['--vi-menu-back-color']=props.backColor):''
+  props.rightBorder?(styleList['--vi-menu-border-right-color']='var(--vi-menu-font-active-color)'):''
+  props.leftBorder?(styleList['--vi-menu-border-left-color']='var(--vi-menu-font-active-color)'):''
+  props.borderSize?(styleList['--vi-menu-border-size']=props.borderSize):''
   return styleList
 })
 const isSlot = computed(() => {
@@ -84,6 +101,12 @@ const isSlot = computed(() => {
 .vi-menu {
   --vi-menu-width: 250px;
   --vi-menu-height: 100%;
+  --vi-menu-back-active-color:var(--vi-color-light-primary-9);
+  --vi-menu-back-color:#fff;
+  --vi-menu-font-active-color:var(--vi-color-primary);
+  --vi-menu-font-color:#000;
+  --vi-menu-border-left:0;
+  --vi-menu-border-right:0;
   width: var(--vi-menu-width);
   height: var(--vi-menu-height);
   --vi-menu-level: 0;
