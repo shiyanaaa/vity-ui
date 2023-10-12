@@ -61,15 +61,19 @@ const index = ref('3')
 </script>
 
 <template>
-  <div style="width: 100vw; height: 100vh; display: flex">
-    <ViMenu rightBorder  activeFontColor="#EC407A" activeBackColor="#FCE4EC" :data="treeData" v-model="index"> </ViMenu>
-    {{ index }}
+  <div style="width: 100vw; height: 100vh;display: flex;">
+    <ViMenu rightBorder activeFontColor="#EC407A" activeBackColor="#FCE4EC" :data="treeData" v-model="index"> </ViMenu>
+    <!-- {{ index }} -->
+    <div>
+      <ViMenu horizontal bottomBorder activeFontColor="#EC407A" activeBackColor="#FCE4EC" :data="treeData"
+        v-model="index"> </ViMenu>
+    </div>
   </div>
 </template>
 
 <style scoped lang="scss">
 .btn {
-  & + div {
+  &+div {
     margin-top: 20px;
   }
 }

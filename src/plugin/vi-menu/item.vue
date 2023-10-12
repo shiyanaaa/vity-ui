@@ -1,11 +1,7 @@
 <template>
-  <div :class="className" :style="style">
-    <div
-      v-if="!props.isGroup"
-      class="vi-menu-item-inner"
-      :class="{ 'no-child': !hasChild }"
-      @click.stop="itemClick"
-    >
+  <div :class="className" :style="style" @mouseover="hover(true)" @mouseout="hover(false)">
+    <div  v-if="!props.isGroup || horizontal" class="vi-menu-item-inner" :class="{ 'no-child': !hasChild }"
+      @click.stop="itemClick">
       <span class="vi-menu-item-label">{{ props.label }}</span>
       <span class="vi-menu-item-right">
         <ViIcon v-if="isSlot || (showChildren && hasChild)" name="xiayiyeqianjinchakangengduo" />
@@ -20,17 +16,9 @@
       </div>
 
       <div v-else-if="showChildren && hasChild" class="vi-menu-item-child">
-        <ViMenuItem
-          v-for="item in props.children"
-          :children="item.children"
-          :showChildren="props.showChildren"
-          :label="item.label"
-          :key="item.id"
-          :level="props.level + 1"
-          :link="item.link"
-          :index="item.index"
-          :isGroup="item.isGroup"
-        ></ViMenuItem>
+        <ViMenuItem v-for="item in props.children" :children="item.children" :showChildren="props.showChildren"
+          :label="item.label" :key="item.id" :level="props.level + 1" :link="item.link" :index="item.index"
+          :isGroup="item.isGroup"></ViMenuItem>
       </div>
     </div>
   </div>
@@ -39,11 +27,12 @@
 <script setup lang="ts" name="ViMenuItem">
 import { computed, useSlots, Comment, ref, inject, onMounted, watch, nextTick } from 'vue'
 const activeIndex = ref(inject('activeIndex'))
+const horizontal = ref(inject('horizontal'))
 const nodeClick = inject('nodeClick') as Function
 const emit = defineEmits(['nodeClick'])
 import ViIcon from '../vi-icon/index.vue'
 const uSlots = useSlots()
-const menuItem = ref<HTMLInputElement | null>(null)
+// const menuItem = ref<HTMLInputElement | null>(null)
 interface Props {
   label: string
   showChildren?: boolean
@@ -53,9 +42,12 @@ interface Props {
   level?: number
   link?: string
   index: string
-  isGroup?: boolean
-}
+  isGroup?: boolean,
 
+}
+watch(activeIndex,()=>{
+  if(horizontal.value) open.value=false;
+})
 const props = withDefaults(defineProps<Props>(), {
   showChildren: false,
   closeIcon: 'xiayiyeqianjinchakangengduo',
@@ -64,9 +56,21 @@ const props = withDefaults(defineProps<Props>(), {
   link: '',
   isGroup: false
 })
+const hover=(status:boolean)=>{
+  if(horizontal.value){
+    if(props.level===1){
+      open.value=status;
+    }
+  }
+  
+}
 const className = computed(() => {
   let nameList = ['vi-menu-item']
-  open.value || props.isGroup ? nameList.push('is-open') : nameList.push('is-close')
+  horizontal.value?nameList.push(`is-horizontal`):''
+  console.log(props.level);
+  
+  props.level===1? nameList.push(`is-root`):nameList.push(`is-child`)
+  open.value || (props.isGroup&&!horizontal.value) ? nameList.push('is-open') : nameList.push('is-close')
   activeIndex.value === props.index ? nameList.push('is-active') : ''
   return nameList
 })
@@ -106,37 +110,70 @@ const itemClick = () => {
 
 <style lang="scss" scoped>
 .vi-menu-item {
-  counter-increment: section;
   width: 100%;
   box-sizing: border-box;
   --vi-menu-item-right-rotate: rotateZ(0);
   --vi-menu-item-child-height: 0;
   --vi-menu-item-back-color: var(--vi-menu-back-color);
   --vi-menu-item-font-color: var(--vi-menu-font-color);
+  &.is-child{
+    .vi-menu-item-inner{
+      border-bottom: none;
+    }
+  }
+  &.is-horizontal {
+    width: auto;
+    --vi-menu-level: 0 !important;
+    &.is-root{
+      height: 100%;
+      .vi-menu-item-inner{
+        height: 100%;
+      }
+      .vi-menu-child{
+        box-shadow: 0 0 2px #ccc;
+      }
+    }
+    .vi-menu-item-inner{
+      border-left: none;
+      border-right: none;
+    }
+    &.is-open {
+      --vi-menu-item-right-rotate: rotateZ(-90deg);
+    }
+
+    &.is-close {
+      --vi-menu-item-right-rotate: rotateZ(90deg);
+    }
+  }
 
   &.is-active {
     // border:none;
 
     --vi-menu-item-back-color: var(--vi-menu-back-active-color);
     --vi-menu-item-font-color: var(--vi-menu-font-active-color);
-    --vi-menu-item-border-left-color:var(--vi-menu-border-left-color, transparent);
-    --vi-menu-item-border-right-color:var(--vi-menu-border-right-color, transparent);
+    --vi-menu-item-border-left-color: var(--vi-menu-border-left-color, transparent);
+    --vi-menu-item-border-right-color: var(--vi-menu-border-right-color, transparent);
+    --vi-menu-item-border-bottom-color: var(--vi-menu-border-bottom-color, transparent);
   }
+
   &.is-open {
     --vi-menu-item-right-rotate: rotateZ(90deg);
     --vi-menu-item-child-height: auto;
     --vi-menu-item-fr: 1fr;
   }
+
   &.is-close {
     --vi-menu-item-right-rotate: rotateZ(0);
     --vi-menu-item-child-height: 0;
     --vi-menu-item-fr: 0fr;
   }
+
   .vi-menu-item-group {
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding: 10px 20px;
+
     .vi-menu-item-group-label {
       white-space: nowrap;
       line-height: normal;
@@ -145,7 +182,9 @@ const itemClick = () => {
       padding-left: calc(10px * var(--vi-menu-level));
     }
   }
+
   .vi-menu-item-inner {
+    box-sizing: border-box;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -153,8 +192,10 @@ const itemClick = () => {
     cursor: pointer;
     background-color: var(--vi-menu-item-back-color);
     transition: all 0.3s;
-    border-left: var(--vi-menu-border-size,3px) solid var(--vi-menu-item-border-left-color, transparent);
-    border-right: var(--vi-menu-border-size,3px) solid var(--vi-menu-item-border-right-color, transparent);
+    border-left: var(--vi-menu-border-size, 3px) solid var(--vi-menu-item-border-left-color, transparent);
+    border-right: var(--vi-menu-border-size, 3px) solid var(--vi-menu-item-border-right-color, transparent);
+    border-bottom: var(--vi-menu-border-size, 3px) solid var(--vi-menu-item-border-bottom-color, transparent);
+
     .vi-menu-item-label {
       transition: color 0.3s;
       padding-left: calc(10px * var(--vi-menu-level));
@@ -166,6 +207,7 @@ const itemClick = () => {
       --vi-menu-item-back-color: var(--vi-menu-back-active-color);
       --vi-menu-item-font-color: var(--vi-menu-font-active-color);
     }
+
     .vi-menu-item-right {
       display: flex;
       transform-origin: center;
@@ -173,12 +215,14 @@ const itemClick = () => {
       transition: all 0.3s;
     }
   }
+
   .vi-menu-child {
     transition: all 0.5s;
     overflow: hidden;
     display: grid;
     grid-template-rows: var(--vi-menu-item-fr);
   }
+
   .vi-menu-item-child {
     min-height: 0;
   }
