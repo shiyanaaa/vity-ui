@@ -58,16 +58,25 @@ const change = (e: boolean) => {
   ViMessage.success(`当前为：${e}`)
 }
 const index = ref('3')
+const options=[
+  {label:'测试1',value:1},
+  {label:'测试2',value:2},
+  {label:'测试3',value:3},
+  {label:'测试4',value:4},
+]
 </script>
 
 <template>
   <div style="width: 100vw; height: 100vh;display: flex;">
-    <ViMenu rightBorder activeFontColor="#EC407A" activeBackColor="#FCE4EC" :data="treeData" v-model="index"> </ViMenu>
-    <!-- {{ index }} -->
+    <!-- <ViMenu rightBorder activeFontColor="#EC407A" activeBackColor="#FCE4EC" :data="treeData" v-model="index"> </ViMenu>
     <div>
       <ViMenu horizontal bottomBorder activeFontColor="#EC407A" activeBackColor="#FCE4EC" :data="treeData"
         v-model="index"> </ViMenu>
-    </div>
+    </div> -->
+    <ViSelect v-model="index" :options="options"></ViSelect>
+    <ViSelect v-model="index" type="large">
+    </ViSelect>
+    <ViSelect v-model="index" type="small"></ViSelect>
   </div>
 </template>
 
