@@ -1,27 +1,85 @@
 <template>
-    <div :class="className" :style="style">123
-        <slot></slot>
+  <div :class="className" :style="style" @click="nodeClickHandle">
+    <div class="vi-option-inner">
+      <slot v-if="isSlot"></slot>
+      <div v-else>{{ props.label }}</div>
     </div>
-  </template>
-  
-  <script setup lang='ts' name="ViOption">
-  import { computed } from 'vue'
-  interface Props {
-   
-  }
-  const props = withDefaults(defineProps<Props>(),{
-   
-  } )
-  const className = computed(() => {
-    let nameList = ['vi-option']
-    return nameList
-  })
-  const style = computed(() => {
+    <slot></slot>
+  </div>
+</template>
+
+<script setup lang="ts" name="ViOption">
+import { computed, useSlots, Comment, inject, ref } from 'vue'
+const active = ref(inject('active'))
+const nodeClick = inject('nodeClick') as Function
+const changeLabel = inject('changeLabel') as Function
+const uSlots = useSlots()
+interface Props {
+  label: string
+  value: any
+  data?: any,
+
+}
+const props = withDefaults(defineProps<Props>(), {
+
+})
+const isActive=computed(()=>{
+  if(active.value === props.value) changeLabel(props.label)
+  return active.value === props.value
+})
+const className = computed(() => {
+  let nameList = ['vi-option']
+  isActive.value ? nameList.push('is-active') : nameList.push('is-close')
+  return nameList
+})
+const style = computed(() => {
   let styleList = {}
-    return styleList
-  })
-  </script>
+  return styleList
+})
+const isSlot = computed(() => {
+  if (uSlots && uSlots.default) {
+    console.log(uSlots.default())
+    const hasOnlyComments = uSlots.default().every((node) => {
+      return node.type === Comment || (node.children && node.children.length === 0)
+    })
+    if (hasOnlyComments) {
+      return false
+    }
+    //从默认插槽中获取内容
+    return true
+  } else {
+    return false
+  }
+})
+const nodeClickHandle=()=>{
+  console.log(nodeClick);
   
-  <style lang="scss" scoped>
-  
-  </style>
+  nodeClick(props.value)
+}
+</script>
+
+<style lang="scss" scoped>
+.vi-option {
+
+  position: relative;
+  z-index:1;
+  --vi-option-hover-color: var(--vi-color-primary);
+  --vi-option-hover-background-color: var(--vi-color-light-primary-9);
+  --vi-option-active-color: var(--vi-color-primary);
+
+  --vi-option-color: var();
+  --vi-option-background-color: var();
+  color: var(--vi-option-color);
+  background-color: var(--vi-option-background-color);
+  padding: 0 10px;
+  cursor: pointer;
+  &:hover {
+    --vi-option-color: var(--vi-option-active-color);
+    --vi-option-background-color: var(--vi-option-hover-background-color);
+  }
+  &.is-active {
+    --vi-option-color: var(--vi-option-active-color);
+    // --vi-option-background-color:var();
+  }
+}
+</style>

@@ -27,7 +27,7 @@ import { type Tree } from './type'
 const emit = defineEmits(['update:modelValue'])
 const uSlots = useSlots()
 interface Props {
-  modelValue: string
+  modelValue: any
   data?: Tree[]
   activeLink?: boolean
   collapse?: boolean

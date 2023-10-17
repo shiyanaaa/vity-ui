@@ -67,8 +67,6 @@ const hover=(status:boolean)=>{
 const className = computed(() => {
   let nameList = ['vi-menu-item']
   horizontal.value?nameList.push(`is-horizontal`):''
-  console.log(props.level);
-  
   props.level===1? nameList.push(`is-root`):nameList.push(`is-child`)
   open.value || (props.isGroup&&!horizontal.value) ? nameList.push('is-open') : nameList.push('is-close')
   activeIndex.value === props.index ? nameList.push('is-active') : ''
@@ -101,6 +99,8 @@ const iconName = computed(() => {
   return open.value ? props.openIcon : props.closeIcon
 })
 const itemClick = () => {
+  console.log(nodeClick);
+  
   nextTick(() => {
     !(isSlot.value || (props.showChildren && hasChild.value)) || (open.value = !open.value)
     isSlot.value || (props.showChildren && hasChild.value) || nodeClick(props.index)

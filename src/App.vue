@@ -57,32 +57,47 @@ const treeData = ref([
 const change = (e: boolean) => {
   ViMessage.success(`当前为：${e}`)
 }
-const index = ref('3')
-const options=[
-  {label:'测试1',value:1},
-  {label:'测试2',value:2},
-  {label:'测试3',value:3},
-  {label:'测试4',value:4},
+const index = ref(0)
+const options = [
+  { label: '测试1', value: 1 },
+  { label: '测试2', value: 2 },
+  { label: '测试3', value: 3 },
+  { label: '测试4', value: 4 }
 ]
+const btn = () => {
+  ViMessage.success('点击了按钮')
+}
+const bool = ref(false)
 </script>
 
 <template>
-  <div style="width: 100vw; height: 100vh;display: flex;">
-    <!-- <ViMenu rightBorder activeFontColor="#EC407A" activeBackColor="#FCE4EC" :data="treeData" v-model="index"> </ViMenu>
+  <div style="width: 100vw; height: 100vh; display: flex">
+    <ViMenu
+      rightBorder
+
+      :data="treeData"
+      v-model="index"
+    >
+    </ViMenu>
     <div>
-      <ViMenu horizontal bottomBorder activeFontColor="#EC407A" activeBackColor="#FCE4EC" :data="treeData"
-        v-model="index"> </ViMenu>
-    </div> -->
-    <ViSelect v-model="index" :options="options"></ViSelect>
-    <ViSelect v-model="index" type="large">
-    </ViSelect>
-    <ViSelect v-model="index" type="small"></ViSelect>
+      
+      <ViButton type="success" @click="btn">提示</ViButton>
+      <ViSwitch v-model="bool"></ViSwitch>
+      <ViForm labelWidth="50px">
+        <ViFormItem label="帐号">
+          <ViInput></ViInput>
+        </ViFormItem>
+        <ViFormItem label="爱好">
+          <ViSelect v-model="index" :options="options"></ViSelect>
+        </ViFormItem>
+      </ViForm>
+    </div>
   </div>
 </template>
 
 <style scoped lang="scss">
 .btn {
-  &+div {
+  & + div {
     margin-top: 20px;
   }
 }
