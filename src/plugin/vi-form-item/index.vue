@@ -1,19 +1,26 @@
 
 <template>
     <div :class="className">
-        <div class="vi-form-item-label" v-if="props.label">{{ props.label }}</div>
+        <label :for="formItemId" class="vi-form-item-label" v-if="props.label">{{ props.label }}</label>
         <slot></slot>
     </div>
 </template>
     
 <script setup lang='ts' name="ViFormItem">
-import { computed } from 'vue'
+import { computed,provide } from 'vue'
 interface Props {
     label?: string
 }
+provide(
+  'vi-form-item-id',
+  computed(() => formItemId.value)
+)
 const props = withDefaults(defineProps<Props>(),{
     label: ''
 } )
+const formItemId=computed(()=>{
+    return 'vi-form-item-'+Math.random().toString(36)
+})
 const className = computed(() => {
     let nameList = ['vi-form-item']
 

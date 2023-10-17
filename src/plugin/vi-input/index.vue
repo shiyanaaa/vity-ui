@@ -1,5 +1,5 @@
 <template>
-  <div :style="inputStyle" :class="inputClass" @click="inputClick">
+  <label :for="id" :style="inputStyle" :class="inputClass" @click="inputClick">
     <div :class="inputWrapperClass">
       <span v-if="uSlots.prefix || props.prefixIcon" class="vi-input-prefix">
         <span class="vi-input-prefix-inner">
@@ -20,6 +20,7 @@
         :value="value"
         @input="onInput"
         :placeholder="props.placeholder"
+        :id="id"
       />
       <span v-if="props.selectInput" class="vi-input-suffix vi-input-select-suffix">
         <span class="vi-input-suffix-inner">
@@ -34,14 +35,15 @@
         </span>
       </span>
     </div>
-  </div>
+  </label>
 </template>
 
 <script setup lang="ts" name="ViInput">
-import { computed, ref, useSlots } from 'vue'
+import { computed, ref, useSlots,inject } from 'vue'
 import ViIcon from '../vi-icon/index.vue'
 const emit = defineEmits(['update:modelValue', 'selectClick', 'focus', 'blur'])
 const uSlots = useSlots()
+const id = ref<string|undefined>(inject('vi-form-item-id')) 
 interface Props {
   modelValue?: string
   size?: 'default' | 'large' | 'small' | ''

@@ -68,6 +68,7 @@ const btn = () => {
   ViMessage.success('点击了按钮')
 }
 const bool = ref(false)
+const input=ref('')
 </script>
 
 <template>
@@ -80,12 +81,12 @@ const bool = ref(false)
     >
     </ViMenu>
     <div>
-      
+      <ViInput v-model="input"></ViInput>
       <ViButton type="success" @click="btn">提示</ViButton>
       <ViSwitch v-model="bool"></ViSwitch>
       <ViForm labelWidth="50px">
         <ViFormItem label="帐号">
-          <ViInput></ViInput>
+          <ViInput v-model="input"></ViInput>
         </ViFormItem>
         <ViFormItem label="爱好">
           <ViSelect v-model="index" :options="options"></ViSelect>
