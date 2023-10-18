@@ -254,7 +254,7 @@ const buttonStyle = computed(() => {
                 --vi-button-hover-bgcolor: var(--vi-color-#{$key});
                 --vi-button-hover-color: #fff;
                 --vi-button-active-bgcolor: var(--vi-color-dark-#{$key}-1);
-                --vi-button-active-color: var(--vi-button-color);
+                --vi-button-active-color: #fff;
                 --vi-button-disable-bgcolor: var(--vi-color-light-#{$key}-9);
                 --vi-button-disable-color: var(--vi-color-light-#{$key}-1);
 

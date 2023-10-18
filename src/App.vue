@@ -83,6 +83,7 @@ const input=ref('')
     <div>
       <ViInput v-model="input"></ViInput>
       <ViButton type="success" @click="btn">提示</ViButton>
+      <ViButton plain type="success" @click="btn">提示</ViButton>
       <ViSwitch v-model="bool"></ViSwitch>
       <ViForm labelWidth="50px">
         <ViFormItem label="帐号">
