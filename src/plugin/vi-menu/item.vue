@@ -201,6 +201,7 @@ const itemClick = () => {
       padding-left: calc(10px * var(--vi-menu-level));
       color: var(--vi-menu-item-font-color);
       flex: 1;
+      user-select:none;
     }
 
     &.no-child:hover {

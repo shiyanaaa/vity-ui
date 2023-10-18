@@ -40,7 +40,7 @@ export default defineConfig({
       entry: resolve(__dirname, 'src/plugin/index.ts'),  // entry是必需的，因为库不能使用HTML作为入口。
       name: 'VityUI', // 暴露的全局变量
       fileName: 'index', // 输出的包文件名，默认是package.json的name选项
-      formats: ['es', 'umd'],
+      formats: [ 'umd'],
     },
     rollupOptions: { // 自定义底层的Rollup打包配置
       // https://rollupjs.org/configuration-options/

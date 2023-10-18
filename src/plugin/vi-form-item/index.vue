@@ -39,6 +39,7 @@ const className = computed(() => {
         text-align: var(--vi-form-item-label-position, right);
         line-height: var(--vi-height-default);
         padding-right: 10px;
+        user-select:none;
     }
 }
 </style>

@@ -149,11 +149,13 @@ const isSlot = computed(() => {
     box-shadow: 0 0 0 1px var(--vi-select-border-color) inset;
   }
   .vi-select-option {
+    --vi-select-option-opacity:0;
     width: 100%;
     top: 100%;
     position: absolute;
     display: grid;
     grid-template-rows: var(--vi-select-option-fr);
+    opacity: var( --vi-select-option-opacity);
     overflow: hidden;
     transition: all 0.3s;
     .vi-select-option-inner {
@@ -184,6 +186,7 @@ const isSlot = computed(() => {
     }
     &.is-open {
       --vi-select-option-fr: 1fr;
+      --vi-select-option-opacity:1;
       .vi-select-option-inner {
         padding: 10px 0;
         margin-top: 14px;
@@ -191,6 +194,7 @@ const isSlot = computed(() => {
     }
     &.is-close {
       --vi-select-option-fr: 0fr;
+      --vi-select-option-opacity:0;
       .vi-select-option-inner {
         padding: 0;
         margin-top: 0;
