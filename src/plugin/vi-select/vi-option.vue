@@ -18,10 +18,11 @@ interface Props {
   label: string
   value: any
   data?: any,
+  disabled?:boolean
 
 }
 const props = withDefaults(defineProps<Props>(), {
-
+  disabled:false
 })
 const isActive=computed(()=>{
   if(active.value === props.value) changeLabel(props.label)
@@ -30,6 +31,7 @@ const isActive=computed(()=>{
 const className = computed(() => {
   let nameList = ['vi-option']
   isActive.value ? nameList.push('is-active') : nameList.push('is-close')
+  props.disabled?nameList.push('is-disabled') : ''
   return nameList
 })
 const style = computed(() => {
@@ -51,6 +53,7 @@ const isSlot = computed(() => {
   }
 })
 const nodeClickHandle=()=>{
+  if(props.disabled) return
   nodeClick(props.value)
 }
 </script>
@@ -78,6 +81,11 @@ const nodeClickHandle=()=>{
   &.is-active {
     --vi-option-color: var(--vi-option-active-color);
     // --vi-option-background-color:var();
+  }
+  &.is-disabled{
+    cursor:auto;
+    --vi-option-color: #ccc;
+    --vi-option-background-color: #fff;
   }
 }
 </style>

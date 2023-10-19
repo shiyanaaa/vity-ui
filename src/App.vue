@@ -68,18 +68,12 @@ const btn = () => {
   ViMessage.success('点击了按钮')
 }
 const bool = ref(false)
-const input=ref('')
+const input = ref('')
 </script>
 
 <template>
   <div style="width: 100vw; height: 100vh; display: flex">
-    <ViMenu
-      rightBorder
-
-      :data="treeData"
-      v-model="index"
-    >
-    </ViMenu>
+    <ViMenu rightBorder :data="treeData" v-model="index"> </ViMenu>
     <div>
       <ViInput v-model="input"></ViInput>
       <ViButton type="success" @click="btn">提示</ViButton>
@@ -91,6 +85,16 @@ const input=ref('')
         </ViFormItem>
         <ViFormItem label="爱好">
           <ViSelect v-model="index" :options="options"></ViSelect>
+        </ViFormItem>
+        <ViFormItem label="测试">
+          <ViSelect v-model="index" disabled>
+            <ViOption
+              v-for="item in options"
+              :label="item.label"
+              :value="item.value"
+              :key="item.value"
+            ></ViOption>
+          </ViSelect>
         </ViFormItem>
       </ViForm>
     </div>

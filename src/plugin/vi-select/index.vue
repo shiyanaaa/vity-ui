@@ -5,19 +5,30 @@
       v-model="showLabel"
       :size="props.size"
       selectInput
-      @blur="selectClick(false)"
+      @blur="blurHandle"
       :placeholder="props.placeholder"
       :focus="open"
       @selectClick="boxClick"
+      :disabled="props.disabled"
     ></ViInput>
     <div :class="optionsClass">
-      <div class="vi-select-option-inner">
+      <div class="vi-select-option-inner" v-if="isSlot">
+      <slot></slot>
+      </div>
+      <div class="vi-select-option-inner" v-else-if="data.length">
         <ViOption
           v-for="item in data"
           :label="item.label"
           :value="item.value"
           :data="item.data"
           :key="item.value"
+        ></ViOption>
+      </div>
+      <div class="vi-select-option-inner" v-else>
+        <ViOption
+          label="无数据"
+          value="0000"
+          disabled
         ></ViOption>
       </div>
     </div>
@@ -54,6 +65,7 @@ interface Props {
   prop?: Prop
   options?: Array<any>
   placeholder?: string
+  disabled?:boolean
 }
 const props = withDefaults(defineProps<Props>(), {
   prop: () => {
@@ -61,7 +73,8 @@ const props = withDefaults(defineProps<Props>(), {
   },
   options: () => [],
   size: '',
-  placeholder:'请选择'
+  placeholder:'请选择',
+  disabled:false
 })
 const data = computed(() => {
   if (isSlot.value) {
@@ -78,18 +91,19 @@ const data = computed(() => {
     return []
   }
 })
-const selectClick = (bool: boolean) => {
-  if (open.value == bool) return
-  if (bool) open.value = true
-  else {
-    setTimeout(() => {
-      open.value = false
-    }, 100)
-  }
+let blurTime=0;
+const blurHandle = () => {
+  blurTime=new Date().getTime();
+  setTimeout(()=>{
+    open.value=false;
+  },100)
+
 }
 const boxClick=(e:Event)=>{
+  if(props.disabled) return
+  if(new Date().getTime()-blurTime<150) return;
   open.value=!open.value;
-  console.log(e);
+  
   
 }
 const emit = defineEmits(['update:modelValue'])
@@ -99,6 +113,7 @@ const selectStyle = computed(() => {
 const optionsClass = computed(() => {
   let nameList = ['vi-select-option']
   open.value ? nameList.push(`is-open`) : ''
+  props.disabled?nameList.push(`is-disabled`) : ''
   return nameList
 })
 const selectClass = computed(() => {
@@ -166,7 +181,7 @@ const isSlot = computed(() => {
     opacity: var( --vi-select-option-opacity);
     overflow: hidden;
     transition: all 0.3s;
-    
+    z-index: 20;
     .vi-select-option-inner {
       background-color: #ffffff;
       min-height: 0;
@@ -176,7 +191,7 @@ const isSlot = computed(() => {
       position: relative;
       padding: 0;
       width: 100%;
-      z-index: 10;
+      z-index: 30;
       transition: all 0.3s;
       margin-top: 0;
       &::before {
@@ -193,6 +208,9 @@ const isSlot = computed(() => {
         border-top: 1px solid #ccc;
         z-index: 0;
       }
+    }
+    &.is-disabled{
+      cursor: no-drop;
     }
     &.is-open {
       --vi-select-option-fr: 1fr;

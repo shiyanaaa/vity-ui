@@ -2,6 +2,7 @@ import type { App } from 'vue'
 import ViButton from './vi-button/index.vue'
 import ViIcon from './vi-icon/index.vue'
 import ViSelect from './vi-select/index.vue'
+import ViOption from './vi-select/vi-option.vue'
 import ViInput from './vi-input/index.vue'
 import ViForm from './vi-form/index.vue'
 import ViFormItem from './vi-form-item/index.vue'
@@ -20,6 +21,7 @@ const components = [
   ViButton,
   ViIcon,
   ViSelect,
+  ViOption,
   ViInput,
   ViForm,
   ViFormItem,
@@ -52,6 +54,7 @@ export {
   ViButton,
   ViIcon,
   ViSelect,
+  ViOption,
   ViInput,
   ViForm,
   ViFormItem,

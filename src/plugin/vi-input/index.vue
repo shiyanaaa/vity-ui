@@ -11,7 +11,7 @@
                 <ViIcon :size="20" v-if="props.suffixIcon" :name="props.suffixIcon" />
             </slot> -->
       <input
-      @click.stop="inputClick"
+        @click.stop="inputClick"
         :type="props.type"
         :disabled="props.disabled"
         :readonly="props.selectInput"
@@ -21,7 +21,7 @@
         @input="onInput"
         :placeholder="props.placeholder"
         :id="id"
-        :ref="el=>inputRef=el"
+        :ref="(el) => (inputRef = el)"
       />
       <span v-if="props.selectInput" class="vi-input-suffix vi-input-select-suffix">
         <span class="vi-input-suffix-inner">
@@ -44,9 +44,15 @@ import { computed, ref, useSlots, inject, watch } from 'vue'
 import ViIcon from '../vi-icon/index.vue'
 const emit = defineEmits(['update:modelValue', 'selectClick', 'focus', 'blur'])
 const uSlots = useSlots()
-const id = ref<string | undefined>(inject('vi-form-item-id',() =>{
-   return 'vi-form-item-'+Math.random().toString(36)
-},true))
+const id = ref<string | undefined>(
+  inject(
+    'vi-form-item-id',
+    () => {
+      return 'vi-form-item-' + Math.random().toString(36)
+    },
+    true
+  )
+)
 interface Props {
   modelValue?: string
   size?: 'default' | 'large' | 'small' | ''
@@ -57,9 +63,9 @@ interface Props {
   width?: string
   selectInput?: boolean
   placeholder?: string
-  focus?:boolean
+  focus?: boolean
 }
-const inputRef=ref()
+const inputRef = ref()
 const props = withDefaults(defineProps<Props>(), {
   modelValue: '',
   size: '',
@@ -69,27 +75,14 @@ const props = withDefaults(defineProps<Props>(), {
   type: 'text',
   width: '100%',
   selectInput: false,
-  focus:false
+  focus: false
 })
-const inputClick = (e:Event) => {
+const inputClick = (e: Event) => {
   if (props.selectInput) emit('selectClick', e)
 }
-const timer=ref(0)
 const blurHandle = () => {
-  
-  if(!focus.value||new Date().getTime()-timer.value<150) return;
-  inputRef.value.blur()
+  if(props.focus)
   emit('blur', value.value)
-  focus.value = false
-  timer.value=new Date().getTime(); 
-}
-const focusHandle = () => {
-  
-  if(new Date().getTime()-timer.value<150) return;
-  emit('focus', value.value)
-  inputRef.value.focus()
-  focus.value = true
-  timer.value=new Date().getTime(); 
 }
 const value = computed({
   get: () => props.modelValue || '',
@@ -110,7 +103,7 @@ const inputStyle = computed(() => {
 
 const inputWrapperClass = computed(() => {
   let nameList = ['vi-input-wrapper']
-  focus.value||props.focus ? nameList.push('is-focus') : ''
+  focus.value || props.focus ? nameList.push('is-focus') : ''
   return nameList
 })
 const inputClass = computed(() => {
@@ -161,6 +154,9 @@ defineExpose({ setFoucus })
       cursor: pointer;
       .el-input-inner {
         cursor: pointer;
+        &[disabled]{
+          cursor: no-drop;
+        }
       }
     }
   }
@@ -222,7 +218,7 @@ defineExpose({ setFoucus })
       padding: 0;
       outline: none;
       border: none;
-      &[readonly]{
+      &[readonly] {
         user-select: none;
       }
     }
