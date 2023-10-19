@@ -5,9 +5,10 @@
       v-model="showLabel"
       :size="props.size"
       selectInput
-      @focus="selectClick(true)"
       @blur="selectClick(false)"
       :placeholder="props.placeholder"
+      :focus="open"
+      @selectClick="boxClick"
     ></ViInput>
     <div :class="optionsClass">
       <div class="vi-select-option-inner">
@@ -33,6 +34,8 @@ provide(
   computed(() => props.modelValue)
 )
 provide('nodeClick', (e: string) => {
+  console.log('nodeClick',false);
+  
   open.value = false
   emit('update:modelValue', e)
 })
@@ -83,6 +86,11 @@ const selectClick = (bool: boolean) => {
       open.value = false
     }, 100)
   }
+}
+const boxClick=(e:Event)=>{
+  open.value=!open.value;
+  console.log(e);
+  
 }
 const emit = defineEmits(['update:modelValue'])
 const selectStyle = computed(() => {
@@ -158,7 +166,9 @@ const isSlot = computed(() => {
     opacity: var( --vi-select-option-opacity);
     overflow: hidden;
     transition: all 0.3s;
+    
     .vi-select-option-inner {
+      background-color: #ffffff;
       min-height: 0;
       box-shadow: 0 0 0 1px var(--vi-select-border-color) inset;
       border-radius: var(--vi-select-border-radius);

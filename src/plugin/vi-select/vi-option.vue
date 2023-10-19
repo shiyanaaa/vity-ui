@@ -38,7 +38,6 @@ const style = computed(() => {
 })
 const isSlot = computed(() => {
   if (uSlots && uSlots.default) {
-    console.log(uSlots.default())
     const hasOnlyComments = uSlots.default().every((node) => {
       return node.type === Comment || (node.children && node.children.length === 0)
     })
@@ -52,8 +51,6 @@ const isSlot = computed(() => {
   }
 })
 const nodeClickHandle=()=>{
-  console.log(nodeClick);
-  
   nodeClick(props.value)
 }
 </script>
@@ -72,6 +69,7 @@ const nodeClickHandle=()=>{
   color: var(--vi-option-color);
   background-color: var(--vi-option-background-color);
   padding: 0 10px;
+  user-select:none;
   cursor: pointer;
   &:hover {
     --vi-option-color: var(--vi-option-active-color);

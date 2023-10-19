@@ -1,5 +1,5 @@
 <template>
-  <label :for="id" :style="inputStyle" :class="inputClass" @click="inputClick">
+  <label :for="id" :style="inputStyle" :class="inputClass">
     <div :class="inputWrapperClass">
       <span v-if="uSlots.prefix || props.prefixIcon" class="vi-input-prefix">
         <span class="vi-input-prefix-inner">
@@ -11,16 +11,17 @@
                 <ViIcon :size="20" v-if="props.suffixIcon" :name="props.suffixIcon" />
             </slot> -->
       <input
+      @click.stop="inputClick"
         :type="props.type"
         :disabled="props.disabled"
         :readonly="props.selectInput"
         class="el-input-inner"
         @blur="blurHandle"
-        @focus="focusHandle"
         :value="value"
         @input="onInput"
         :placeholder="props.placeholder"
         :id="id"
+        :ref="el=>inputRef=el"
       />
       <span v-if="props.selectInput" class="vi-input-suffix vi-input-select-suffix">
         <span class="vi-input-suffix-inner">
@@ -39,11 +40,13 @@
 </template>
 
 <script setup lang="ts" name="ViInput">
-import { computed, ref, useSlots,inject } from 'vue'
+import { computed, ref, useSlots, inject, watch } from 'vue'
 import ViIcon from '../vi-icon/index.vue'
 const emit = defineEmits(['update:modelValue', 'selectClick', 'focus', 'blur'])
 const uSlots = useSlots()
-const id = ref<string|undefined>(inject('vi-form-item-id')) 
+const id = ref<string | undefined>(inject('vi-form-item-id',() =>{
+   return 'vi-form-item-'+Math.random().toString(36)
+},true))
 interface Props {
   modelValue?: string
   size?: 'default' | 'large' | 'small' | ''
@@ -54,7 +57,9 @@ interface Props {
   width?: string
   selectInput?: boolean
   placeholder?: string
+  focus?:boolean
 }
+const inputRef=ref()
 const props = withDefaults(defineProps<Props>(), {
   modelValue: '',
   size: '',
@@ -63,18 +68,28 @@ const props = withDefaults(defineProps<Props>(), {
   disabled: false,
   type: 'text',
   width: '100%',
-  selectInput: false
+  selectInput: false,
+  focus:false
 })
-const inputClick = () => {
-  if (props.selectInput) emit('selectClick', true)
+const inputClick = (e:Event) => {
+  if (props.selectInput) emit('selectClick', e)
 }
+const timer=ref(0)
 const blurHandle = () => {
+  
+  if(!focus.value||new Date().getTime()-timer.value<150) return;
+  inputRef.value.blur()
   emit('blur', value.value)
   focus.value = false
+  timer.value=new Date().getTime(); 
 }
 const focusHandle = () => {
+  
+  if(new Date().getTime()-timer.value<150) return;
   emit('focus', value.value)
+  inputRef.value.focus()
   focus.value = true
+  timer.value=new Date().getTime(); 
 }
 const value = computed({
   get: () => props.modelValue || '',
@@ -95,7 +110,7 @@ const inputStyle = computed(() => {
 
 const inputWrapperClass = computed(() => {
   let nameList = ['vi-input-wrapper']
-  focus.value ? nameList.push('is-focus') : ''
+  focus.value||props.focus ? nameList.push('is-focus') : ''
   return nameList
 })
 const inputClass = computed(() => {
@@ -105,6 +120,16 @@ const inputClass = computed(() => {
   props.disabled ? nameList.push(`is-disabled`) : ''
   return nameList
 })
+const setFoucus = (bool: boolean) => {
+  if (bool) {
+    emit('focus', value.value)
+    focus.value = true
+  } else {
+    emit('blur', value.value)
+    focus.value = false
+  }
+}
+defineExpose({ setFoucus })
 </script>
 
 <style scoped lang="scss">
@@ -152,11 +177,11 @@ const inputClass = computed(() => {
     box-shadow: 0 0 0 1px var(--vi-input-border-color) inset;
     transform: translateZ(0);
     .vi-input-select-suffix {
-        .vi-input-suffix-inner {
-            transition: all .3s;
-          transform: rotateZ(0);
-        }
+      .vi-input-suffix-inner {
+        transition: all 0.3s;
+        transform: rotateZ(0);
       }
+    }
     .vi-input-prefix,
     .vi-input-suffix {
       display: inline-flex;
@@ -197,6 +222,9 @@ const inputClass = computed(() => {
       padding: 0;
       outline: none;
       border: none;
+      &[readonly]{
+        user-select: none;
+      }
     }
   }
 
