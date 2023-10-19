@@ -57,7 +57,7 @@ const treeData = ref([
 const change = (e: boolean) => {
   ViMessage.success(`当前为：${e}`)
 }
-const index = ref(0)
+const index = ref(1)
 const options = [
   { label: '测试1', value: 1 },
   { label: '测试2', value: 2 },
@@ -83,16 +83,16 @@ const input = ref('')
         <ViFormItem label="帐号">
           <ViInput v-model="input"></ViInput>
         </ViFormItem>
-        <ViFormItem label="爱好">
+        <!-- <ViFormItem label="爱好">
           <ViSelect v-model="index" :options="options"></ViSelect>
-        </ViFormItem>
+        </ViFormItem> -->
         <ViFormItem label="测试">
-          <ViSelect v-model="index" disabled>
+          <ViSelect v-model="index" >
             <ViOption
               v-for="item in options"
-              :label="item.label"
               :value="item.value"
               :key="item.value"
+              :label="item.label"
             ></ViOption>
           </ViSelect>
         </ViFormItem>

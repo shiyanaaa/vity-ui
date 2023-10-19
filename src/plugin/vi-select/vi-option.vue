@@ -4,7 +4,6 @@
       <slot v-if="isSlot"></slot>
       <div v-else>{{ props.label }}</div>
     </div>
-    <slot></slot>
   </div>
 </template>
 
@@ -17,21 +16,24 @@ const uSlots = useSlots()
 interface Props {
   label: string
   value: any
-  data?: any,
-  disabled?:boolean
-
+  data?: any
+  disabled?: boolean
 }
 const props = withDefaults(defineProps<Props>(), {
-  disabled:false
+  disabled: false
 })
-const isActive=computed(()=>{
-  if(active.value === props.value) changeLabel(props.label)
+const isActive = computed(() => {
+  if (active.value === props.value) {
+    if (isSlot&&uSlots && uSlots.default) changeLabel(uSlots.default()[0].children)
+    else
+    changeLabel(props.label)
+  }
   return active.value === props.value
 })
 const className = computed(() => {
   let nameList = ['vi-option']
   isActive.value ? nameList.push('is-active') : nameList.push('is-close')
-  props.disabled?nameList.push('is-disabled') : ''
+  props.disabled ? nameList.push('is-disabled') : ''
   return nameList
 })
 const style = computed(() => {
@@ -52,17 +54,16 @@ const isSlot = computed(() => {
     return false
   }
 })
-const nodeClickHandle=()=>{
-  if(props.disabled) return
+const nodeClickHandle = () => {
+  if (props.disabled) return
   nodeClick(props.value)
 }
 </script>
 
 <style lang="scss" scoped>
 .vi-option {
-
   position: relative;
-  z-index:1;
+  z-index: 1;
   --vi-option-hover-color: var(--vi-color-primary);
   --vi-option-hover-background-color: var(--vi-color-light-primary-9);
   --vi-option-active-color: var(--vi-color-primary);
@@ -72,7 +73,7 @@ const nodeClickHandle=()=>{
   color: var(--vi-option-color);
   background-color: var(--vi-option-background-color);
   padding: 0 10px;
-  user-select:none;
+  user-select: none;
   cursor: pointer;
   &:hover {
     --vi-option-color: var(--vi-option-active-color);
@@ -82,8 +83,8 @@ const nodeClickHandle=()=>{
     --vi-option-color: var(--vi-option-active-color);
     // --vi-option-background-color:var();
   }
-  &.is-disabled{
-    cursor:auto;
+  &.is-disabled {
+    cursor: auto;
     --vi-option-color: #ccc;
     --vi-option-background-color: #fff;
   }

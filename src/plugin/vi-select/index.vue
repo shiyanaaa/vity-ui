@@ -45,8 +45,6 @@ provide(
   computed(() => props.modelValue)
 )
 provide('nodeClick', (e: string) => {
-  console.log('nodeClick',false);
-  
   open.value = false
   emit('update:modelValue', e)
 })
@@ -123,8 +121,6 @@ const selectClass = computed(() => {
 })
 const isSlot = computed(() => {
   if (uSlots && uSlots.default) {
-    console.log(uSlots.default())
-
     const hasOnlyComments = uSlots.default().every((node) => {
       return node.type === Comment || (node.children && node.children.length === 0)
     })
