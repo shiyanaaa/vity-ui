@@ -22,6 +22,7 @@
           :value="item.value"
           :data="item.data"
           :key="item.value"
+          :disabled="item.disabled"
         ></ViOption>
       </div>
       <div class="vi-select-option-inner" v-else>
@@ -82,7 +83,8 @@ const data = computed(() => {
       return {
         label: item[props.prop.label],
         value: item[props.prop.value],
-        data: item
+        data: item,
+        disabled:item.disabled
       }
     })
   } else {

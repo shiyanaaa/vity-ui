@@ -86,7 +86,7 @@ const nodeClickHandle = () => {
   &.is-disabled {
     cursor: auto;
     --vi-option-color: #ccc;
-    --vi-option-background-color: #fff;
+    --vi-option-background-color: transparent;
   }
 }
 </style>
