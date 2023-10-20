@@ -14,6 +14,7 @@ import ViFooter from './vi-container/footer.vue'
 import ViMessage from './vi-message/index'
 import ViSwitch from './vi-switch/index.vue'
 import ViMenu from './vi-menu/index.vue'
+import ViTag from './vi-tag/index.vue'
 import ViMenuItem from './vi-menu/item.vue'
 import "./style.scss"
 // 所有组件列表
@@ -32,7 +33,8 @@ const components = [
   ViFooter,
   ViSwitch,
   ViMenu,
-  ViMenuItem
+  ViMenuItem,
+  ViTag
   // ViMessage
 ]
 
@@ -66,7 +68,8 @@ export {
   ViMessage,
   ViSwitch,
   ViMenu,
-  ViMenuItem
+  ViMenuItem,
+  ViTag
 }
 
 const VityUI = {
