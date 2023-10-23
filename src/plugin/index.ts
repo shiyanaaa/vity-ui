@@ -16,6 +16,7 @@ import ViSwitch from './vi-switch/index.vue'
 import ViMenu from './vi-menu/index.vue'
 import ViTag from './vi-tag/index.vue'
 import ViMenuItem from './vi-menu/item.vue'
+import ViIconConfig from "./vi-icon/index"
 import "./style.scss"
 // 所有组件列表
 const components = [
@@ -69,7 +70,8 @@ export {
   ViSwitch,
   ViMenu,
   ViMenuItem,
-  ViTag
+  ViTag,
+  ViIconConfig
 }
 
 const VityUI = {

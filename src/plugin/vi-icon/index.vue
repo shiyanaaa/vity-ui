@@ -27,7 +27,7 @@ const iconStyle = computed(() => {
     }
 })
 const iconName = computed(() => {
-    return `#icon-${props.name}`
+    return `#vi-${props.name}`
 })
 const iconClass = computed(() => {
     let iconClassList = ['icon', 'vi-icon']

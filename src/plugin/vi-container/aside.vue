@@ -23,5 +23,6 @@ const style = computed(() => {
 .vi-aside {
     width: var(--vi-aside-width);
     height: 100%;
+    flex-shrink: 0;
 }
 </style>

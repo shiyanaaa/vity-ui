@@ -1,15 +1,23 @@
 <script setup lang="ts">
 import { ViMessage } from '@/plugin'
 import { onMounted, ref, watch } from 'vue'
-const tagType=['default','primary','warning','error','success','info']
-const tagSize=['small','default','large']
+const select=ref("")
+const options=ref([
+  {label:'123',value:'112323'},
+  {label:'123',value:'1212313'},
+  {label:'11231223',value:'11232323423'},
+  {label:'112323',value:'11231223'},
+  {label:'11231223',value:'1231233'},
+  {label:'112323',value:'1123111223'},
+])
 </script>
 
 <template>
   <div style="width: 100vw; height: 100vh; display: flex">
-    <vi-tag v-for="item in tagType" :type="item">{{item}}</vi-tag>
+    <!-- <vi-tag v-for="item in tagType" :type="item">{{item}}</vi-tag>
     <vi-tag plain v-for="item in tagType" :type="item">{{item}}</vi-tag>
-    <vi-tag plain v-for="item in tagSize" :size="item" type="success">{{item}}</vi-tag>
+    <vi-tag plain v-for="item in tagSize" :size="item" type="success">{{item}}</vi-tag> -->
+    <ViSelect v-model="select" :options="options"></ViSelect>
   </div>
 </template>
 

@@ -12,6 +12,7 @@
     .vi-footer{
         width:100%;
         --el-header-height: 60px;
-        height: var(--el-header-height)
+        height: var(--el-header-height);
+        flex-shrink: 0;
     }
 </style>
