@@ -31,7 +31,7 @@ const isVertical = () => {
     height: 100%;
     display: flex;
     flex-direction: row;
-    flex-shrink: 0;
+    flex:1;
     &.is-vertical{
         flex-direction: column;
     }
