@@ -191,9 +191,15 @@ defineExpose({ setFoucus })
       pointer-events: none;
       .vi-input-prefix-inner {
         margin-right: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
       }
       .vi-input-suffix-inner {
         margin-left: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
       }
     }
 
