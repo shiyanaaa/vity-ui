@@ -1,0 +1,11 @@
+@import '@/style/var.scss';
+@import '@/style/mixin.scss';
+
+
+@mixin defaultColor{
+    // $var: '--vi';
+    @each $name, $value in $defaultColor {
+        $var: 'var(--vi-color-'+#{$value}+');';
+        @include set-var(('vi', 'default', $name), $var);
+    }
+}

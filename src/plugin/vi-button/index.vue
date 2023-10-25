@@ -27,6 +27,7 @@ interface Props {
     loading?: boolean,
     loadIcon?: string,
     size?: 'default' | 'large' | 'small' | ''
+    link?:boolean
 }
 
 const props = withDefaults(defineProps<Props>(),{
@@ -40,7 +41,8 @@ const props = withDefaults(defineProps<Props>(),{
     color: '',
     loading: false,
     loadIcon: '',
-    size: ''
+    size: '',
+    link:false
 
 })
 const className = computed(() => {
@@ -51,7 +53,9 @@ const className = computed(() => {
     props.circle ? nameList.push(`is-circle`) : ""
     props.square ? nameList.push(`is-square`) : ""
     props.disabled ? nameList.push(`is-disabled`) : ""
+    props.link?nameList.push(`is-link`) : ""
     typeof props.size === 'string' ? nameList.push(`vi-button-${props.size}`) : ''
+    
     return nameList
 })
 const isVertical = computed(() => {
@@ -154,22 +158,22 @@ const buttonStyle = computed(() => {
 </script>
 <style lang="scss" scoped>
 .vi-button {
-    --vi-button-color: #000;
-    --vi-button-bgcolor: #fff;
-    --vi-button-hover-color: #000;
-    --vi-button-hover-bgcolor: #fff;
-    --vi-button-active-color: #000;
-    --vi-button-active-bgcolor: #fff;
-    --vi-button-border-color: #000;
-    --vi-button-disable-bgcolor: #f7f7f7;
-    --vi-button-disable-color: #747474;
-    --vi-button-disable-border-color: #686767;
+    --vi-button-color: var(--vi-default-color);
+    --vi-button-bgcolor: var(--vi-default-bgcolor);
+    --vi-button-hover-color: var(--vi-default-hover-color);
+    --vi-button-hover-bgcolor: var(--vi-default-hover-bgcolor);
+    --vi-button-active-color: var(--vi-default-active-color);
+    --vi-button-active-bgcolor: var(--vi-default-active-bgcolor);
+    --vi-button-border-color: var(--vi-default-border-color);
+    --vi-button-disable-bgcolor: var(--vi-default-disable-bgcolor);
+    --vi-button-disable-color: var(--vi-default-disable-color);
+    --vi-button-disable-border-color: var(--vi-default-disable-border-color);
     color: var(--vi-button-color);
     background-color: var(--vi-button-bgcolor);
     padding: 8px 15px;
     cursor: pointer;
     border-radius: 5px;
-    border: 1px solid #000;
+    border: 1px solid var(--vi-color-black);
     vertical-align: middle;
     height: var(--vi-button-height, 32px);
     display: inline-flex;
@@ -237,7 +241,7 @@ const buttonStyle = computed(() => {
 
     @each $key, $color in $colors {
         &.vi-button-#{$key} {
-            --vi-button-color: #fff;
+            --vi-button-color: var(--vi-color-white);
             --vi-button-bgcolor: var(--vi-color-#{$key});
             --vi-button-border-color: var(--vi-color-#{$key});
             --vi-button-disable-color: var(--vi-button-color);
@@ -252,12 +256,23 @@ const buttonStyle = computed(() => {
                 --vi-button-bgcolor: var(--vi-color-light-#{$key}-8);
                 --vi-button-color: var(--vi-color-#{$key});
                 --vi-button-hover-bgcolor: var(--vi-color-#{$key});
-                --vi-button-hover-color: #fff;
+                --vi-button-hover-color: var(--vi-color-white);
                 --vi-button-active-bgcolor: var(--vi-color-dark-#{$key}-1);
-                --vi-button-active-color: #fff;
+                --vi-button-active-color: var(--vi-color-white);
                 --vi-button-disable-bgcolor: var(--vi-color-light-#{$key}-9);
                 --vi-button-disable-color: var(--vi-color-light-#{$key}-1);
-
+            }
+            &.is-link{
+                --vi-button-bgcolor: transparent;
+                --vi-button-color: var(--vi-color-#{$key});
+                --vi-button-hover-bgcolor: transparent;
+                --vi-button-hover-color: var(--vi-color-light-#{$key}-1);
+                --vi-button-active-bgcolor: transparent;
+                --vi-button-active-color: var(--vi-color-dark-#{$key}-2);
+                --vi-button-disable-bgcolor: transparent;
+                --vi-button-disable-color: var(--vi-color-light-#{$key}-2);
+                --vi-button-border-color:transparent;
+                --vi-button-disable-border-color:transparent;
             }
         }
     }
