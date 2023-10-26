@@ -18,15 +18,8 @@ const options=ref([
     <vi-tag plain v-for="item in tagType" :type="item">{{item}}</vi-tag>
     <vi-tag plain v-for="item in tagSize" :size="item" type="success">{{item}}</vi-tag> -->
     <ViSelect v-model="select" :options="options"></ViSelect>
-    <vi-button>123</vi-button>
-    <vi-button disabled>123</vi-button>
-    <vi-button type="success">123</vi-button>
-    <vi-button plain type="success">123</vi-button>
-    <vi-button link type="success">123</vi-button>
-    <vi-button color="#FF0033" plain link type="success">123</vi-button>
-    <vi-tag type="success" plain color="#FF0033" >123</vi-tag>
-    <vi-tag type="success" color="#9933FF" >123</vi-tag>
-    
+    <!-- <vi-input v-model="select"></vi-input> -->
+
   </div>
 </template>
 

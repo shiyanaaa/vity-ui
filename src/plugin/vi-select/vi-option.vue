@@ -75,6 +75,7 @@ const nodeClickHandle = () => {
   padding: 0 10px;
   user-select: none;
   cursor: pointer;
+  line-height: var(--vi-select-height);
   &:hover {
     --vi-option-color: var(--vi-option-active-color);
     --vi-option-background-color: var(--vi-option-hover-background-color);

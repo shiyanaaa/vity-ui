@@ -143,7 +143,7 @@
     position: relative;
     font-size: 14px;
     width: var(--vi-select-width);
-    line-height: var(--vi-select-height);
+    // line-height: var(--vi-select-height);
     height: var(--vi-select-height);
     display: inline-block;
     vertical-align: middle;

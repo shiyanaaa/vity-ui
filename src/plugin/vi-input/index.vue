@@ -1,5 +1,5 @@
 <template>
-  <label :for="id" :style="inputStyle" :class="inputClass">
+  <label :for="id" :style="inputStyle" :class="inputClass" :tabindex="disabled?'':'-1'">
     <div :class="inputWrapperClass">
       <span v-if="uSlots.prefix || props.prefixIcon" class="vi-input-prefix">
         <span class="vi-input-prefix-inner">
@@ -103,7 +103,6 @@ const inputStyle = computed(() => {
 
 const inputWrapperClass = computed(() => {
   let nameList = ['vi-input-wrapper']
-  focus.value || props.focus ? nameList.push('is-focus') : ''
   return nameList
 })
 const inputClass = computed(() => {
@@ -140,7 +139,18 @@ defineExpose({ setFoucus })
   height: var(--vi-input-height);
   box-sizing: border-box;
   vertical-align: middle;
-
+  --vi-input-select-icon-rote:rotateZ(0);
+  &:hover {
+      --vi-input-border-color:var(--vi-input-hover-border-color);
+    }
+  &:focus-within {
+    --vi-input-border-color:var(--vi-color-primary);
+      .vi-input-select-suffix {
+        .vi-input-suffix-inner {
+          --vi-input-select-icon-rote: rotateZ(180deg);
+        }
+      }
+    }
   &.vi-input-small {
     --vi-input-height: var(--vi-height-small);
   }
@@ -175,7 +185,7 @@ defineExpose({ setFoucus })
     .vi-input-select-suffix {
       .vi-input-suffix-inner {
         transition: all 0.3s;
-        transform: rotateZ(0);
+        transform: var(--vi-input-select-icon-rote);
       }
     }
     .vi-input-prefix,
@@ -203,18 +213,9 @@ defineExpose({ setFoucus })
       }
     }
 
-    &:hover {
-      box-shadow: 0 0 0 1px var(--vi-input-hover-border-color) inset;
-    }
+    
 
-    &.is-focus {
-      box-shadow: 0 0 0 1px var(--vi-color-primary) inset;
-      .vi-input-select-suffix {
-        .vi-input-suffix-inner {
-          transform: rotateZ(180deg);
-        }
-      }
-    }
+    
 
     .el-input-inner {
       height: calc(var(--vi-input-height) - 2px);
