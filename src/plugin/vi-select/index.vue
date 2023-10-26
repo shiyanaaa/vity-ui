@@ -1,5 +1,5 @@
 <template>
-    <div ref="selectRef" :class="selectClass" :tabindex="props.disabled?'':-1">
+    <div :ref="(el)=>selectRef=el" :class="selectClass" :tabindex="props.disabled?'':-1">
       <!-- <div class="vi-select-inner">{{ open }}{{ modelValue }}</div> -->
       <ViInput
         v-model="showLabel"
@@ -37,13 +37,13 @@
   import ViInput from '../vi-input/index.vue'
   import { computed, useSlots, Comment, provide, ref} from 'vue'
   const showLabel = ref('')
-  const selectRef= ref()
+  const selectRef= ref(null as any)
   provide(
     'active',
     computed(() => props.modelValue)
   )
   provide('nodeClick', (e: string) => {
-    selectRef.value.blur()
+    selectRef.value&&selectRef.value.blur()
     emit('update:modelValue', e)
   })
   provide('changeLabel', (e: string) => {
@@ -140,6 +140,8 @@
     --vi-select-border-radius: 4px;
     --vi-select-bg-color: #ffffff;
     --vi-select-hover-border-color: #c0c4cc;
+    --vi-select-options-border-color: #dcdfe6;
+    --vi-input-select-icon-rote:rotateZ(0);
     position: relative;
     font-size: 14px;
     width: var(--vi-select-width);
@@ -147,7 +149,12 @@
     height: var(--vi-select-height);
     display: inline-block;
     vertical-align: middle;
+    &:hover {
+      --vi-select-border-color:var(--vi-select-hover-border-color);
+    }
     &:focus-within {
+      --vi-select-border-color:var(--vi-color-primary);
+      --vi-input-select-icon-rote: rotateZ(180deg);
       --vi-select-option-fr: 1fr;
       --vi-select-option-opacity: 1;
       .vi-select-option .vi-select-option-inner {
@@ -168,7 +175,7 @@
       padding: 0 10px;
       box-sizing: border-box;
       border-radius: var(--vi-select-border-radius);
-      box-shadow: 0 0 0 1px var(--vi-select-border-color) inset;
+      box-shadow: 0 0 0 1px var(--vi-select-options-border-color) inset;
     }
     
     .vi-select-option {
@@ -184,7 +191,8 @@
       .vi-select-option-inner {
         background-color: #ffffff;
         min-height: 0;
-        box-shadow: 0 0 0 1px var(--vi-select-border-color) inset;
+        // box-shadow: 0 0 0 1px var(--vi-select-options-border-color) inset;
+        border: 1px solid var(--vi-select-options-border-color);
         border-radius: var(--vi-select-border-radius);
         box-sizing: border-box;
         position: relative;

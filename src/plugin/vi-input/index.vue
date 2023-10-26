@@ -139,17 +139,12 @@ defineExpose({ setFoucus })
   height: var(--vi-input-height);
   box-sizing: border-box;
   vertical-align: middle;
-  --vi-input-select-icon-rote:rotateZ(0);
+  
   &:hover {
       --vi-input-border-color:var(--vi-input-hover-border-color);
     }
   &:focus-within {
     --vi-input-border-color:var(--vi-color-primary);
-      .vi-input-select-suffix {
-        .vi-input-suffix-inner {
-          --vi-input-select-icon-rote: rotateZ(180deg);
-        }
-      }
     }
   &.vi-input-small {
     --vi-input-height: var(--vi-height-small);
@@ -160,6 +155,8 @@ defineExpose({ setFoucus })
   }
   &.vi-input-select {
     cursor: pointer;
+
+    --vi-input-border-color:var(--vi-select-border-color);
     .vi-input-wrapper {
       cursor: pointer;
       .el-input-inner {

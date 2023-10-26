@@ -3,7 +3,7 @@ import { ViMessage } from '@/plugin'
 import { onMounted, ref, watch } from 'vue'
 const select=ref("")
 const options=ref([
-  {label:'123',value:'112323'},
+  {label:'123',value:'112323',disabled:true},
   {label:'123',value:'1212313'},
   {label:'11231223',value:'11232323423'},
   {label:'112323',value:'11231223'},
@@ -18,7 +18,7 @@ const options=ref([
     <vi-tag plain v-for="item in tagType" :type="item">{{item}}</vi-tag>
     <vi-tag plain v-for="item in tagSize" :size="item" type="success">{{item}}</vi-tag> -->
     <ViSelect v-model="select" :options="options"></ViSelect>
-    <!-- <vi-input v-model="select"></vi-input> -->
+    <vi-input v-model="select"></vi-input>
 
   </div>
 </template>
