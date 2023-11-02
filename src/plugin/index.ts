@@ -19,6 +19,7 @@ import ViMenuItem from './vi-menu/item.vue'
 import ViIconConfig from "./vi-icon/index"
 import ViRadioGroup from './radio/vi-radio-group.vue'
 import ViRadio from "./radio/vi-radio.vue"
+import ViAvatar from './avatar/vi-avatar.vue'
 import "./style.scss"
 // 所有组件列表
 const components = [
@@ -39,7 +40,8 @@ const components = [
   ViMenuItem,
   ViTag,
   ViRadioGroup,
-  ViRadio
+  ViRadio,
+  ViAvatar
   // ViMessage
 ]
 
@@ -77,7 +79,8 @@ export {
   ViTag,
   ViIconConfig,
   ViRadioGroup,
-  ViRadio
+  ViRadio,
+  ViAvatar
 }
 
 const VityUI = {

@@ -9,7 +9,7 @@ import { computed } from 'vue';
 import "@/assets/fonts/iconfont.js"
 interface Props {
     name?: string,
-    size?: number,
+    size?: number|string,
     color?: string,
     rotating?: boolean
 }

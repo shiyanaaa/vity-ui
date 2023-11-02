@@ -10,20 +10,18 @@ const options = ref([
   { label: '11231223', value: '1231233' },
   { label: '112323', value: '1123111223' }
 ])
+const fits= ['fill', 'contain', 'cover', 'none', 'scale-down']
+const src=ref("https://fuss10.elemecdn.com/e/5d/4a731a91320594a4af544c0c25941171jpeg.jpeg")
+const aaa=()=>{
+  src.value="https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg"
+}
+
 </script>
 
 <template>
   <div style="width: 100vw; height: 100vh; display: flex">
-    <!-- <vi-tag v-for="item in tagType" :type="item">{{item}}</vi-tag>
-    <vi-tag plain v-for="item in tagType" :type="item">{{item}}</vi-tag>
-    <vi-tag plain v-for="item in tagSize" :size="item" type="success">{{item}}</vi-tag> -->
-    <!-- <ViSelect v-model="select" :options="options"></ViSelect>
-    <vi-input v-model="select"></vi-input> -->
-    <vi-radio-group v-model="select">
-      <vi-radio label="123"> 123 </vi-radio>
-      <vi-radio label="456"> 456 </vi-radio>
-      <vi-radio label="789"> 789 </vi-radio>
-    </vi-radio-group>
+    <vi-avatar v-for="item in fits" size="100" :fit="item" @click="aaa" :src="src">123</vi-avatar>
+    
   </div>
 </template>
 
