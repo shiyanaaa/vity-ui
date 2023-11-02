@@ -75,7 +75,7 @@ const loadError = (e:Event) => {
   height: var(--vi-avatar-size);
   background-color: var(--vi-color-grey-8);
   color: var(--vi-color-white);
-
+  display: inline-block;
   &.is-circle {
     --vi-avatar-radius: 100%;
   }
